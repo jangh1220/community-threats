@@ -312,9 +312,7 @@
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c rmdir /Q /S \"\"%USERPROFILE%\\Desktop\\.lazarus_emu\"\"",
-                "rtags": [
-                    "att&ck-technique:T1551.004"
-                ],
+                "rtags": [],
                 "type": "message"
             },
             "30": {
