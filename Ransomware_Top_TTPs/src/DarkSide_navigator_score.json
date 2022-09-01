@@ -1,9 +1,9 @@
 {
 	"name": "DarkSide",
 	"versions": {
-		"attack": "9",
-		"navigator": "4.3",
-		"layer": "4.2"
+		"attack": "11",
+		"navigator": "4.6.6",
+		"layer": "4.3"
 	},
 	"domain": "enterprise-attack",
 	"description": "",
@@ -12,14 +12,14 @@
 			"Linux",
 			"macOS",
 			"Windows",
-			"Azure AD",
+			"PRE",
+			"Containers",
+			"Network",
 			"Office 365",
 			"SaaS",
-			"IaaS",
 			"Google Workspace",
-			"PRE",
-			"Network",
-			"Containers"
+			"IaaS",
+			"Azure AD"
 		]
 	},
 	"sorting": 0,
@@ -34,73 +34,25 @@
 	"hideDisabled": false,
 	"techniques": [
 		{
-			"techniqueID": "T1059",
-			"tactic": "execution",
+			"techniqueID": "T1071",
+			"tactic": "command-and-control",
 			"score": 20,
 			"color": "#ff4444",
 			"comment": "",
 			"enabled": true,
 			"metadata": [],
+			"links": [],
 			"showSubtechniques": true
 		},
 		{
-			"techniqueID": "T1053",
-			"tactic": "privilege-escalation",
-			"score": 20,
-			"color": "",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1053.005",
-			"tactic": "privilege-escalation",
+			"techniqueID": "T1560",
+			"tactic": "collection",
 			"score": 20,
 			"color": "#ff4444",
 			"comment": "",
 			"enabled": true,
 			"metadata": [],
-			"showSubtechniques": false
-		},
-		{
-			"techniqueID": "T1551",
-			"tactic": "defense-evasion",
-			"score": 20,
-			"color": "",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1551.004",
-			"tactic": "defense-evasion",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": false
-		},
-		{
-			"techniqueID": "T1012",
-			"tactic": "discovery",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1033",
-			"tactic": "discovery",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
+			"links": [],
 			"showSubtechniques": true
 		},
 		{
@@ -111,76 +63,7 @@
 			"comment": "",
 			"enabled": true,
 			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1082",
-			"tactic": "discovery",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1074",
-			"tactic": "collection",
-			"score": 20,
-			"color": "",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1074.001",
-			"tactic": "collection",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": false
-		},
-		{
-			"techniqueID": "T1560",
-			"tactic": "collection",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1041",
-			"tactic": "exfiltration",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1071",
-			"tactic": "command-and-control",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1219",
-			"tactic": "command-and-control",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
+			"links": [],
 			"showSubtechniques": true
 		},
 		{
@@ -191,62 +74,35 @@
 			"comment": "",
 			"enabled": true,
 			"metadata": [],
+			"links": [],
 			"showSubtechniques": true
 		},
 		{
-			"techniqueID": "T1486",
-			"tactic": "impact",
+			"techniqueID": "T1012",
+			"tactic": "discovery",
 			"score": 20,
 			"color": "#ff4444",
 			"comment": "",
 			"enabled": true,
 			"metadata": [],
+			"links": [],
 			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1490",
-			"tactic": "impact",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1491",
-			"tactic": "impact",
-			"score": 20,
-			"color": "",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": true
-		},
-		{
-			"techniqueID": "T1491.001",
-			"tactic": "impact",
-			"score": 20,
-			"color": "#ff4444",
-			"comment": "",
-			"enabled": true,
-			"metadata": [],
-			"showSubtechniques": false
 		}
 	],
 	"gradient": {
 		"colors": [
-			"#ff6666",
-			"#ffe766",
-			"#8ec843"
+			"#ff6666ff",
+			"#ffe766ff",
+			"#8ec843ff"
 		],
 		"minValue": 0,
 		"maxValue": 100
 	},
 	"legendItems": [],
 	"metadata": [],
+	"links": [],
 	"showTacticRowBackground": false,
 	"tacticRowBackground": "#dddddd",
-	"selectTechniquesAcrossTactics": true,
+	"selectTechniquesAcrossTactics": false,
 	"selectSubtechniquesWithParent": false
 }
