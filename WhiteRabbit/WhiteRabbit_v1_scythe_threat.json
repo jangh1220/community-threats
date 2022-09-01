@@ -7,7 +7,7 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp 127.0.0.1:443 --heartbeat 1 --multipart 10240 --secure true",
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
                 "module": "https",
                 "type": "initialization"
             },
@@ -103,9 +103,7 @@
             "13": {
                 "module": "run",
                 "request": "cmd /c rmdir /Q /S %USERPROFILE%\\Desktop\\WhiteRabbit\"",
-                "rtags": [
-                    "att&ck-technique:T1551.004"
-                ],
+                "rtags": [],
                 "type": "message"
             },
             "14": {
