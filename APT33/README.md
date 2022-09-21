@@ -15,7 +15,7 @@ The group has targeted organizations across multiple industries in the United St
 Establishing persistent access to partners and suppliers of targets. Mounting supply chain attacks.
 
 ### Capabalities
-Unmanaged PowerSHell
+Unmanaged PowerShell
 
 ## Attack - SEC699 Emulation Plan
 This is a multi campaign threat that requires the following steps to be done first:
@@ -89,5 +89,5 @@ Finish
 ```
 
 ## References
-https://www.scythe.io/library/threatthursday-apt33
-https://attack.mitre.org/groups/G0064/
+- https://www.scythe.io/library/threatthursday-apt33
+- https://attack.mitre.org/groups/G0064/
