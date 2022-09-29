@@ -1,0 +1,88 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "Creates local user z, add to the administrators group, wait 3 minutes, and delete the user.",
+        "display_name": "Yanluowang_add_admin_user_v2",
+        "name": "Yanluowang_add_admin_user_v2",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": {},
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "2": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Create Admin User"
+            },
+            "3": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c echo This will be the last step observed if not running in high integrity mode.",
+                "rtags": [
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "4": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "rtags": [
+                    "att&ck-technique:T1057"
+                ],
+                "type": "message"
+            },
+            "5": {
+                "function": "ifelse",
+                "next": "11",
+                "step": "4",
+                "type": "decision",
+                "value": "",
+                "verb": "is"
+            },
+            "6": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "net user z Lh199211* /add",
+                "rtags": [
+                    "att&ck-technique:T1136.001"
+                ],
+                "type": "message"
+            },
+            "7": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "net localgroup administrators z /add",
+                "rtags": [
+                    "att&ck-technique:T1098"
+                ],
+                "type": "message"
+            },
+            "8": {
+                "time": "180",
+                "type": "delay"
+            },
+            "9": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Cleanup"
+            },
+            "10": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "net user z /delete",
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
