@@ -69,11 +69,12 @@ Attacks have been heavily focused on U.S. corporations in the financial sector b
 ## Attack
 
 ### Automated Emulation
-1. Download and import the Yanluowang.zip file containing the VFS and .json files
-2. Create a new campaign, selecting HTTPS, and configure your HTTPS communication options.
-3. Under Sequence Templates click Existing Threats and select the Yanluowang threat of your choice and add steps to threat.
-4. Click "Start Campaign"
-5. Download the EXE and execute as admin from your test device.
+1. Download and import the common_x64 directory and files to your VFS if not already present.
+2. Download and import the Yanluowang.zip file containing the VFS and .json files
+3. Create a new campaign, selecting HTTPS, and configure your HTTPS communication options.
+4. Under Sequence Templates click Existing Threats and select the Yanluowang threat of your choice and add steps to threat.
+5. Click "Start Campaign"
+6. Download the EXE and execute as admin from your test device.
 
 ## Detection Opportunities
 Please see our full September blog post for detailed detection engineering strategies
