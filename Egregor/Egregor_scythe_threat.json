@@ -7,7 +7,7 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp 127.0.0.1:443 --secure true",
+                "conf": "--cp 127.0.0.1:443 --secure true --multipart 10240",
                 "module": "https",
                 "type": "initialization"
             },
@@ -289,14 +289,14 @@
             "31": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"VFS:/shared/threats/egregor/RECOVER-FILES.txt\" --dest \"%USERPROFILE%\\Desktop\\egregor\\x_malicious_files\\RECOVER-FILES.txt\"",
+                "request": "--src \"VFS:/shared/threats/Egregor/RECOVER-FILES.txt\" --dest \"%USERPROFILE%\\Desktop\\egregor\\x_malicious_files\\RECOVER-FILES.txt\"",
                 "rtags": [
                     "att&ck-technique:T1105"
                 ],
                 "type": "message"
             },
             "32": {
-                "time": 10,
+                "time": "10",
                 "type": "delay"
             },
             "33": {
@@ -339,6 +339,7 @@
                 "type": "message"
             }
         },
-        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29"
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
     }
 }
