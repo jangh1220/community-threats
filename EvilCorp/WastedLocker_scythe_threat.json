@@ -7,23 +7,28 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp 127.0.0.1:443 --heartbeat 2 --multipart 10240 --secure true",
+                "conf": "--cp 127.0.0.1:443 --secure true --multipart 10240",
                 "module": "https",
                 "type": "initialization"
             },
             "1": {
+                "name": "REQUIRES",
+                "type": "assign",
+                "value": "INTERNET ACCESS"
+            },
+            "2": {
                 "module": "loader",
                 "module_to_load": "run",
                 "request": "--load run",
                 "type": "message"
             },
-            "2": {
+            "3": {
                 "module": "loader",
                 "module_to_load": "file",
                 "request": "--load file",
                 "type": "message"
             },
-            "3": {
+            "4": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c mkdir \"%USERPROFILE%\\Desktop\\EvilCorp\"",
@@ -32,25 +37,25 @@
                 ],
                 "type": "message"
             },
-            "4": {
+            "5": {
                 "depends_on": "e96eccc9-6c98-4246-b809-1849684c7df2",
                 "module": "file",
                 "request": "--create --path \"%USERPROFILE%\\Desktop\\EvilCorp\\important_files.docx\" --size 5MB --count 50",
                 "rtags": [],
                 "type": "message"
             },
-            "5": {
+            "6": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "IMPACT"
             },
-            "6": {
+            "7": {
                 "module": "loader",
                 "module_to_load": "crypt",
                 "request": "--load crypt",
                 "type": "message"
             },
-            "7": {
+            "8": {
                 "depends_on": "ff705b65-037a-4f06-b21e-e74e6cfe32bc",
                 "module": "crypt",
                 "request": "--target \"%USERPROFILE%\\Desktop\\EvilCorp\\\" --encrypt --password \"3v1lC0rP\" --erase --recurse --extension wasted",
@@ -59,13 +64,13 @@
                 ],
                 "type": "message"
             },
-            "8": {
+            "9": {
                 "module": "loader",
                 "module_to_load": "downloader",
                 "request": "--load downloader",
                 "type": "message"
             },
-            "9": {
+            "10": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
                 "request": "--src \"https://pastebin.com/raw/ZyVJEYB4\" --dest \"%USERPROFILE%\\Desktop\\wasted_info.txt\"",
@@ -74,7 +79,7 @@
                 ],
                 "type": "message"
             },
-            "10": {
+            "11": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell notepad \"%USERPROFILE%\\Desktop\\wasted_info.txt\"",
@@ -83,24 +88,24 @@
                 ],
                 "type": "message"
             },
-            "11": {
+            "12": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "CLEAN UP"
             },
-            "12": {
+            "13": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell Remove-Item -Recurse -Force \"%USERPROFILE%\\Desktop\\EvilCorp\"",
                 "type": "message"
             },
-            "13": {
+            "14": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell del \"%USERPROFILE%\\Desktop\\wasted_info.txt\"",
                 "type": "message"
             },
-            "14": {
+            "15": {
                 "module": "controller",
                 "request": "--shutdown",
                 "rtags": [
