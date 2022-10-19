@@ -25,7 +25,7 @@
             "3": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"VFS://shared/threats/Qakbot-2022-July/Report Jul 14 47787.iso\" --dest \"%USERPROFILE%\\\\Downloads\\\\Report Jul 14 47787.iso\"",
+                "request": "--src \"VFS:/shared/threats/Qakbot-2022-July/Report Jul 14 47787.iso\" --dest \"%USERPROFILE%\\\\Downloads\\\\Report Jul 14 47787.iso\"",
                 "type": "message"
             },
             "4": {
@@ -53,7 +53,7 @@
             "8": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"VFS://shared/threats/Qakbot-2022-July/click-icon.exe\" --dest \"%USERPROFILE%\\\\Desktop\\\\not-for-detections.exe\"",
+                "request": "--src \"VFS:/shared/threats/Qakbot-2022-July/click-icon.exe\" --dest \"%USERPROFILE%\\\\Desktop\\\\not-for-detections.exe\"",
                 "type": "message"
             },
             "9": {
