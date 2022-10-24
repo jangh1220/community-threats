@@ -23,7 +23,7 @@ Historically, use of AdFind and SoftPerfect Network Scanner have been noted as p
 In the most recent May attack, researchers observed some additional TTPs such as:
 * Creation of local admin user “z”
 * Remote access tools usage (LogMeIn and Team Viewer)
-* Windows logon byass technique leveraging ImageFileExecutionOptions
+* Windows logon bypass technique leveraging ImageFileExecutionOptions
 
 
 ### Targets

@@ -7,7 +7,7 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "conf": "--cp 127.0.0.1:443 --secure true --multipart 10240",
                 "module": "https",
                 "type": "initialization"
             },
@@ -22,8 +22,8 @@
             },
             "2": {
                 "function": "ifelse",
-                "next": 7,
-                "step": 1,
+                "next": "7",
+                "step": "1",
                 "type": "decision",
                 "value": "High",
                 "verb": "contains"
@@ -55,8 +55,8 @@
             },
             "6": {
                 "function": "ifelse",
-                "next": 39,
-                "step": 5,
+                "next": "39",
+                "step": "5",
                 "type": "decision",
                 "value": "High",
                 "verb": "does not contain"
@@ -99,25 +99,25 @@
             "12": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"VFS://shared/HoneyBee/install2.bat\" --dest %TEMP%\\install2.bat",
+                "request": "--src \"VFS://shared/threats/HoneyBee/install2.bat\" --dest %TEMP%\\install2.bat",
                 "type": "message"
             },
             "13": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"VFS://shared/HoneyBee/ipnet.ini\" --dest %TEMP%\\ipnet.ini",
+                "request": "--src \"VFS://shared/threats/HoneyBee/ipnet.ini\" --dest %TEMP%\\ipnet.ini",
                 "type": "message"
             },
             "14": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"VFS://shared/HoneyBee/NTWDBLIB.DLL\" --dest %TEMP%\\NTWDBLIB.DLL",
+                "request": "--src \"VFS://shared/threats/HoneyBee/NTWDBLIB.DLL\" --dest %TEMP%\\NTWDBLIB.DLL",
                 "type": "message"
             },
             "15": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"VFS://shared/HoneyBee/uacme.exe\" --dest %TEMP%\\uacme.exe",
+                "request": "--src \"VFS://shared/threats/HoneyBee/uacme.exe\" --dest %TEMP%\\uacme.exe",
                 "type": "message"
             },
             "16": {
@@ -316,6 +316,7 @@
                 "type": "message"
             }
         },
-        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29"
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
     }
 }

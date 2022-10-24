@@ -7,7 +7,7 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "{\"--cp\":\"127.0.0.1:443\",\"--secure\":true,\"--multipart\":10240,\"--heartbeat\":1}",
+                "conf": "--cp 127.0.0.1:443 --secure true --multipart 10240",
                 "module": "https",
                 "type": "initialization"
             },
@@ -167,7 +167,7 @@
             "22": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
-                "request": "--src \"VFS:/shared/threats/Ransomware/README.txt\" --dest \"%USERPROFILE%\\Desktop\\Ransomware\\README.txt\"",
+                "request": "--src \"VFS:/shared/threats/Ransomware_Top_TTPs/README.txt\" --dest \"%USERPROFILE%\\Desktop\\Ransomware\\README.txt\"",
                 "rtags": [],
                 "type": "message"
             },
@@ -212,6 +212,7 @@
                 "type": "message"
             }
         },
-        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29"
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
     }
 }
