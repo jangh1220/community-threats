@@ -7,7 +7,7 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp 127.0.0.1:443 --secure true --multipart 10240",
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
                 "module": "https",
                 "type": "initialization"
             },
@@ -18,22 +18,27 @@
                 "type": "message"
             },
             "2": {
+                "name": "REQUIRES",
+                "type": "assign",
+                "value": "LOCAL ADMIN"
+            },
+            "3": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Create staging directory"
             },
-            "3": {
+            "4": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c mkdir \"%HOMEPATH%\\remote\"",
                 "type": "message"
             },
-            "4": {
+            "5": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Download LogMeIn .msi file"
             },
-            "5": {
+            "6": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell -c \"Invoke-WebRequest -Uri 'https://github.com/scythe-io/community-threats/blob/master/common_x64/LogMeIn.msi?raw=true' -OutFile \\\"$HOME\\remote\\LogMeIn.msi\\\"\"",
@@ -43,12 +48,12 @@
                 ],
                 "type": "message"
             },
-            "6": {
+            "7": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Install LogMeIn"
             },
-            "7": {
+            "8": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c msiexec /i \"%HOMEPATH%\\remote\\LogMeIn.msi\" /quiet",
@@ -57,16 +62,16 @@
                 ],
                 "type": "message"
             },
-            "8": {
+            "9": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "Clean Up to uninstall program, delete .msi and staging directory"
             },
-            "9": {
+            "10": {
                 "time": "120",
                 "type": "delay"
             },
-            "10": {
+            "11": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c msiexec /x \"%HOMEPATH%\\remote\\LogMeIn.msi\" /quiet",
@@ -75,7 +80,7 @@
                 ],
                 "type": "message"
             },
-            "11": {
+            "12": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe del \"%HOMEPATH%\\remote\\LogMeIn.msi\"",
@@ -84,7 +89,7 @@
                 ],
                 "type": "message"
             },
-            "12": {
+            "13": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe del \"%HOMEPATH%\\remote\\\"",
