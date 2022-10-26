@@ -53,18 +53,40 @@
                 "value": "CLEAN-UP"
             },
             "7": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "type": "message"
+            },
+            "8": {
+                "function": "ifelse",
+                "next": "11",
+                "step": "7",
+                "type": "decision",
+                "value": "High",
+                "verb": "contains"
+            },
+            "9": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe del C:\\windows\\system32\\tasks\\MicrosoftEdgeUpdateTaskMachine_User",
                 "type": "message"
             },
-            "8": {
+            "10": {
+                "function": "ifelse",
+                "next": "12",
+                "step": "7",
+                "type": "decision",
+                "value": "High",
+                "verb": "does not contain"
+            },
+            "11": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe del C:\\windows\\system32\\tasks\\MicrosoftEdgeUpdateTaskMachine_System",
                 "type": "message"
             },
-            "9": {
+            "12": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe del C:\\Users\\Public\\w.ps1",
