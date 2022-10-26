@@ -1,0 +1,99 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "An emulation featuring shell GLOBbing/wildcard pattern matching to create a scheduled task for persistence.",
+        "display_name": "STEEP_MAVERICK_ScheduledTasks",
+        "name": "STEEP_MAVERICK_ScheduledTasks",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "2": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src VFS:/shared/threats/STEEP_MAVERICK_ScheduledTasks/w.ps1 --dest C:\\Users\\Public\\w.ps1",
+                "rtags": [
+                    "att&ck-technique:T1105"
+                ],
+                "type": "message"
+            },
+            "3": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "4": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe -ExecutionPolicy Bypass -File \"C:\\Users\\Public\\w.ps1\"",
+                "rtags": [
+                    "att&ck-technique:T1059.001",
+                    "att&ck-technique:T1027",
+                    "att&ck-technique:T1053"
+                ],
+                "type": "message"
+            },
+            "5": {
+                "time": "180",
+                "type": "delay"
+            },
+            "6": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "CLEAN-UP"
+            },
+            "7": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "type": "message"
+            },
+            "8": {
+                "function": "ifelse",
+                "next": "11",
+                "step": "7",
+                "type": "decision",
+                "value": "High",
+                "verb": "contains"
+            },
+            "9": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe del C:\\windows\\system32\\tasks\\MicrosoftEdgeUpdateTaskMachine_User",
+                "type": "message"
+            },
+            "10": {
+                "function": "ifelse",
+                "next": "12",
+                "step": "7",
+                "type": "decision",
+                "value": "High",
+                "verb": "does not contain"
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe del C:\\windows\\system32\\tasks\\MicrosoftEdgeUpdateTaskMachine_System",
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe del C:\\Users\\Public\\w.ps1",
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
