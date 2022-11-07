@@ -1,0 +1,132 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "A STEEP#MAVERICK emulation based off  IOCs in the Securonix report: https://www.securonix.com/blog/detecting-steepmaverick-new-covert-attack-campaign-targeting-military-contractors/",
+        "display_name": "STEEP_MAVERICK_IOCS",
+        "name": "STEEP_MAVERICK_IOCS",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "upsh",
+                "request": "--load upsh",
+                "type": "message"
+            },
+            "2": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://165.227.139.39/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "3": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://28.199.53.243/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "4": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://cobham-satcom.onrender.com/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "5": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://onrender.com/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "6": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.ink/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "7": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.lol/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "8": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.pics/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "9": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.wiki/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "10": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.vip/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "11": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.app/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.icu/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "13": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://terma.dev/0 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
