@@ -7,7 +7,7 @@
         "operating_system_name": "macos",
         "script": {
             "0": {
-                "conf": "{\"--cp\":\"brandon34.scythe.services:443\",\"--secure\":true,\"--multipart\":10240,\"--jitter\":10}",
+                "conf": "{\"--cp\":\"127.0.0.1:443\",\"--secure\":true,\"--multipart\":10240,\"--jitter\":10}",
                 "module": "https",
                 "type": "initialization"
             },
