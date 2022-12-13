@@ -4,6 +4,8 @@ Black Basta is making the news once again as our friends at SentinelLabs release
 
 The first installment of these new TTP emulations features an indicators of compromise (IOC) focused plan that covers known domain names and IP addresses being used at the time publication as well as an emulation of the threat actors use of a meterpreter .ps1 stager. As noted in an earlier blog highlighting STEEP#MAVERICK IOCs, we recognize that IP addresses, hash values, and domain names are all easily altered by a threat actor. We still feel that IOC feeds and detections have their place in control validation and are a small piece of the larger control validation and coverage picture. Knowing exactly where you stand and what your controls will and won’t detect is a must in any modern cybersecurity program.
 
+The second installment features a different technique leveraged by the threat actor. Black Basta operators have a number of remote access trojan (RAT) tools at their disposal; this installment highlights one of these. Researchers observed the threat actor dropping a self-extracting archive containing the files needed to execute the Netsupport Manager application. Netsupport Manager is a multi-platform remote access/remote support tool that can provide one-to-many support. Black Basta stages these files in C:\temp with the name Svvhost.exe. When the file is executed, the installation files are extracted into C:\Users\[USER]\AppData\Roaming\MSN\. The RAT is then executed via a run.bat script.
+
 ### Automated Emulation
 1. Download and import the BlackBasta_NewTTPs.zip file containing the VFS and .json files
 2. Create a new campaign, selecting HTTPS, and configure your HTTPS communication options.
