@@ -6,7 +6,7 @@ LockBit 2.0 operates as an affiliate-based Ransomware-as-a-Service (RaaS) and em
 Upon execution, Lockbit 2.0 determines the system and user language settings and only targets those not matching a set list of languages that are Eastern European. If an Eastern European language is detected, the program exits without infection. As infection begins, Lockbit 2.0 deletes log files and shadow copies residing on disk. Lockbit 2.0 enumerates system information to include hostname, host configuration, domain information, local drive configuration, remote shares, and mounted external storage devices.Lockbit 2.0 attempts to encrypt any data saved to any local or remote device but skips files associated with core system functions.
 
 ## Automated Emulation
-*** Note this threat is destructive if running with high privilege ***
+*** Note this threat is impactful if running with high privilege ***
 1. Download and import the threat in JSON format to your SCYTHE instance
 2. Download the Virtual File System (VFS) files under LockBit/VFS
 3. Upload the VFS files to your SCYTHE VFS in the following location: VFS:/shared/threats/LockBit
@@ -72,7 +72,7 @@ Clean up:
 run cmd /c rmdir /Q /S ""%USERPROFILE%\Desktop\LockBit""
 run cmd.exe /c del "%USERPROFILE%\Desktop\LockBit_Ransomware.hta"
 ```
-If running with high privilege and want to run the destrutive TTPs:
+If running with high privilege and want to run the risky TTPs:
 ```
 controller --integrity
 run vssadmin Delete Shadows /All /Quiet
