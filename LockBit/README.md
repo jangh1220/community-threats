@@ -1,9 +1,35 @@
 # LockBit
 
-## Cyber Threat Intelligence
-LockBit 2.0 operates as an affiliate-based Ransomware-as-a-Service (RaaS) and employs a wide variety of tactics, techniques, and procedures (TTPs), creating significant challenges for defense and mitigation. LockBit 2.0 ransomware compromises victim networks through a variety of techniques, including, but not limited to, purchased access, unpatched vulnerabilities, insider access, and zero day exploits. [^1]
+## Executive Summary
+LockBit was first observed in September 2019 when it was initially dubbed the “.abcd virus” in reference to the file extension it appended when encrypting files. This group is a ransomware-as-a-service (RaaS) operation and continues to be one of the most prolific ransomware groups to date. Recent research from GuidePoint Security notes that the number of attacks attributed to LockBit more than doubled the remaining top five groups (Vice Society, AlphV, Royal, and Play). Lockbit attacks typically employ a double extortion tactic, first requesting victims to pay to decrypt their data, and then requesting payment to prevent their data from being shared publicly.
 
-Upon execution, Lockbit 2.0 determines the system and user language settings and only targets those not matching a set list of languages that are Eastern European. If an Eastern European language is detected, the program exits without infection. As infection begins, Lockbit 2.0 deletes log files and shadow copies residing on disk. Lockbit 2.0 enumerates system information to include hostname, host configuration, domain information, local drive configuration, remote shares, and mounted external storage devices.Lockbit 2.0 attempts to encrypt any data saved to any local or remote device but skips files associated with core system functions.
+## Cyber Threat Intelligence
+
+### Profile
+LockBit 2.0 operates as an affiliate-based Ransomware-as-a-Service (RaaS) and employs a wide variety of tactics, techniques, and procedures (TTPs), creating significant challenges for defense and mitigation. Initial access is obtained through a variety of techniques, including, but not limited to, purchased access, unpatched vulnerabilities, insider access, and zero day exploits.
+
+Upon execution, Lockbit 2.0 determines the system and user language settings and only targets those not matching a set list of languages that are Eastern European. If an Eastern European language is detected, the program exits without infection. As infection begins, Lockbit 2.0 deletes log files and shadow copies residing on disk. Lockbit 2.0 enumerates system information to include hostname, host configuration, domain information, local drive configuration, remote shares, and mounted external storage devices. Lockbit 2.0 attempts to encrypt any data saved to any local or remote device but skips files associated with core system functions.
+
+
+### Aliases
+* LockBit Red
+
+### Targets
+* The United States is heavily targeted although organizations in much of Western Europe, China, India, Indonesia, and Ukraine have seen attacks as well.
+* BlackBerry research indicates that the average ransom paid by its victims is $85,000 which is suggestive of LockBit targeting small to medium sized organizations.
+* Primarily Windows systems
+
+### Objectives
+* Data theft
+* Financial gain
+* Operations disruption
+
+### Capabilities
+* Data encryption
+* Self-propagating, worm-like spreading
+* Defense evasion
+* Time-based encryption
+  * can encrypt files at a specific time (such as business hours) to maximize impact on victim
 
 ## Automated Emulation
 *** Note this threat is impactful if running with high privilege ***
@@ -91,4 +117,3 @@ controller --shutdown
 
 ## References
 - [FBI Flash](https://www.ic3.gov/Media/News/2022/220204.pdf)
-[^1]: [FBI Flash](https://www.ic3.gov/Media/News/2022/220204.pdf)
